@@ -646,9 +646,188 @@
       </div>
     </div>
 
+    <div
+      id="opnameModal"
+      class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex justify-center items-end md:items-center p-0 md:p-4"
+    >
+      <div
+        class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md p-6 shadow-2xl h-[85vh] md:h-auto overflow-y-auto flex flex-col"
+      >
+        <div
+          class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4 sticky top-0 bg-white"
+        >
+          <h3 id="opnameModalTitle" class="font-bold text-slate-800 text-base">
+            Form Stock Opname
+          </h3>
+          <button
+            type="button"
+            onclick="toggleOpnameModal(false)"
+            class="text-slate-400 bg-slate-100 rounded-full w-8 h-8 flex justify-center items-center hover:bg-slate-200"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <form
+          id="formOpname"
+          class="space-y-3 text-xs flex-1"
+          onsubmit="handleOpnameSubmit(event)"
+        >
+          <input type="hidden" id="opnameFormId" />
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >ID Barang</label
+              >
+              <input
+                type="text"
+                id="opnameItemId"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400 transition"
+                placeholder="Misal: NWA0000001"
+                required
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Nama Barang</label
+              >
+              <input
+                type="text"
+                id="opnameItemName"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+                required
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Size</label
+              >
+              <input
+                type="text"
+                id="opnameSize"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Type</label
+              >
+              <input
+                type="text"
+                id="opnameType"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Serial No.</label
+              >
+              <input
+                type="text"
+                id="opnameSerial"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Brand</label
+              >
+              <input
+                type="text"
+                id="opnameBrand"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Exp. Date</label
+              >
+              <input
+                type="date"
+                id="opnameExpDate"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Unit</label
+              >
+              <input
+                type="text"
+                id="opnameUnit"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Location</label
+              >
+              <input
+                type="text"
+                id="opnameLocation"
+                class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
+                readonly
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-800 mb-1"
+                >Opname Stock</label
+              >
+              <input
+                type="number"
+                id="opnameStock"
+                class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500 font-bold text-slate-800"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-800 mb-1"
+              >Details</label
+            >
+            <textarea
+              id="opnameDetails"
+              rows="2"
+              class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500 text-slate-700"
+            ></textarea>
+          </div>
+
+          <div class="pt-2">
+            <button
+              type="submit"
+              id="btnSubmitOpname"
+              class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition"
+            >
+              Simpan Data Opname
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script>
       const API_URL =
-        "https://script.google.com/macros/s/AKfycbzRXQGZxLnIklD9dgxZvsG4n9ADPLCwJaP246K2Uv6RA1c6T3FcUwU0oEFvhPfJJyg/exec";
+        "https://script.google.com/macros/s/AKfycbw74ngaSaovii6-_jdG1ChK8rOLh5W8HcKoROegs9XhYi--YacXv_CsUGSj2xftTjqM/exec";
 
       let globalBarangData = [];
       let globalPendingData = [];
@@ -657,7 +836,120 @@
       let globalOpnameData = [];
       let opnameCurrentMode = "create";
 
-      // Modifikasi fungsi switchView agar mendukung Opname dan Users
+      // EVENT LISTENER AUTO-FILL OPNAME SAAT KETIK ID BARANG
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("opnameItemId")
+          .addEventListener("input", function (e) {
+            const inputId = e.target.value.trim().toUpperCase();
+
+            // Cari barang di data global yang diambil dari server
+            const barang = globalBarangData.find(
+              (item) =>
+                String(item.id || item.Id || item.ID).toUpperCase() === inputId,
+            );
+
+            if (barang) {
+              // Menggunakan fallback (||) untuk mengantisipasi perbedaan huruf besar/kecil/nama kolom dari Google Sheets
+              document.getElementById("opnameItemName").value =
+                barang.name || barang.Name || barang.nama || barang.Nama || "";
+              document.getElementById("opnameSize").value =
+                barang.size ||
+                barang.Size ||
+                barang.ukuran ||
+                barang.Ukuran ||
+                "";
+              document.getElementById("opnameType").value =
+                barang.type ||
+                barang.Type ||
+                barang.category ||
+                barang.Category ||
+                barang.tipe ||
+                "";
+              document.getElementById("opnameSerial").value =
+                barang.serialNo ||
+                barang.serialno ||
+                barang.SerialNo ||
+                barang["Serial No"] ||
+                barang["Serial No."] ||
+                "";
+              document.getElementById("opnameBrand").value =
+                barang.brand ||
+                barang.Brand ||
+                barang.merk ||
+                barang.Merk ||
+                "";
+
+              // Parsing Exp Date
+              let exp =
+                barang.expDate ||
+                barang.expdate ||
+                barang.ExpDate ||
+                barang["Exp Date"] ||
+                barang.expired ||
+                "";
+              if (exp && exp !== "-") {
+                try {
+                  const d = new Date(exp);
+                  if (!isNaN(d)) {
+                    document.getElementById("opnameExpDate").value = d
+                      .toISOString()
+                      .split("T")[0];
+                  } else {
+                    document.getElementById("opnameExpDate").value = "";
+                  }
+                } catch (err) {
+                  document.getElementById("opnameExpDate").value = "";
+                }
+              } else {
+                document.getElementById("opnameExpDate").value = "";
+              }
+
+              document.getElementById("opnameUnit").value =
+                barang.unit ||
+                barang.Unit ||
+                barang.satuan ||
+                barang.Satuan ||
+                "";
+              document.getElementById("opnameLocation").value =
+                barang.location ||
+                barang.Location ||
+                barang.lokasi ||
+                barang.Lokasi ||
+                "";
+
+              // Ubah border menjadi hijau (Indikator Ditemukan)
+              e.target.classList.remove("border-slate-200");
+              e.target.classList.add(
+                "border-emerald-500",
+                "bg-emerald-50",
+                "text-emerald-700",
+              );
+            } else {
+              // Kosongkan otomatis jika ID dihapus / tidak ditemukan
+              const fields = [
+                "opnameItemName",
+                "opnameSize",
+                "opnameType",
+                "opnameSerial",
+                "opnameBrand",
+                "opnameExpDate",
+                "opnameUnit",
+                "opnameLocation",
+              ];
+              fields.forEach((id) => (document.getElementById(id).value = ""));
+
+              // Reset border (Indikator Normal)
+              e.target.classList.remove(
+                "border-emerald-500",
+                "bg-emerald-50",
+                "text-emerald-700",
+              );
+              e.target.classList.add("border-slate-200");
+            }
+          });
+      });
+
       function switchView(viewName) {
         toggleVerifikasiModal(false);
         toggleModal(false);
@@ -675,6 +967,9 @@
         document
           .getElementById("viewOpname")
           .classList.toggle("hidden", viewName !== "opname");
+        document
+          .getElementById("viewUsers")
+          .classList.toggle("hidden", viewName !== "users");
 
         const menus = ["Home", "Barang", "Opname", "Riwayat", "Users"];
         menus.forEach((menu) => {
@@ -839,7 +1134,6 @@
         });
       }
 
-      // --- LOGIKA RIWAYAT ---
       async function fetchRiwayatData() {
         const container = document.getElementById("riwayatListContainer");
         container.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br />Memuat data riwayat...</div>`;
@@ -862,16 +1156,10 @@
         document.getElementById("badgeTotalRiwayat").innerText =
           `${dataToRender.length} data`;
         container.innerHTML = "";
-
         if (dataToRender.length === 0) {
-          container.innerHTML = `
-            <div class="flex flex-col items-center justify-center py-10 text-slate-400">
-              <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-200"></i>
-              <p class="text-xs font-medium">Tidak ada data riwayat ditemukan.</p>
-            </div>`;
+          container.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400"><i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-200"></i><p class="text-xs font-medium">Tidak ada data riwayat ditemukan.</p></div>`;
           return;
         }
-
         dataToRender.forEach((trx) => {
           let isMasuk = trx.category === "MASUK";
           let catColor = isMasuk
@@ -886,13 +1174,8 @@
             <div class="border border-slate-200 rounded-xl p-3 shadow-sm bg-white hover:shadow-md transition">
               <div class="flex justify-between items-start mb-2">
                  <div class="flex gap-3 items-center">
-                   <div class="w-8 h-8 rounded-full ${isMasuk ? "bg-emerald-50 text-emerald-500" : "bg-rose-50 text-rose-500"} flex justify-center items-center shrink-0">
-                      <i class="fa-solid ${icon} text-sm"></i>
-                   </div>
-                   <div>
-                      <p class="text-xs font-extrabold text-slate-800">${trx.id}</p>
-                      <p class="text-[10px] text-slate-500 font-medium">${trx.dateStr}</p>
-                   </div>
+                   <div class="w-8 h-8 rounded-full ${isMasuk ? "bg-emerald-50 text-emerald-500" : "bg-rose-50 text-rose-500"} flex justify-center items-center shrink-0"><i class="fa-solid ${icon} text-sm"></i></div>
+                   <div><p class="text-xs font-extrabold text-slate-800">${trx.id}</p><p class="text-[10px] text-slate-500 font-medium">${trx.dateStr}</p></div>
                  </div>
                  <span class="text-[9px] font-bold px-2 py-1 rounded-md ${catColor}">${trx.category}</span>
               </div>
@@ -908,24 +1191,19 @@
       function applyFilterRiwayat() {
         const startInput = document.getElementById("filterStartDate").value;
         const endInput = document.getElementById("filterEndDate").value;
-
         if (!startInput || !endInput) {
           alert("Pilih tanggal mulai & sampai terlebih dahulu!");
           return;
         }
-
         const startDate = new Date(startInput);
         startDate.setHours(0, 0, 0, 0);
-
         const endDate = new Date(endInput);
         endDate.setHours(23, 59, 59, 999);
-
         const filtered = globalRiwayatData.filter((trx) => {
           if (!trx.rawDate || trx.rawDate === "-") return false;
           const trxDate = new Date(trx.rawDate);
           return trxDate >= startDate && trxDate <= endDate;
         });
-
         renderRiwayatList(filtered);
       }
 
@@ -934,7 +1212,6 @@
         document.getElementById("filterEndDate").value = "";
         renderRiwayatList(globalRiwayatData);
       }
-      // --- END LOGIKA RIWAYAT ---
 
       async function approveTransaksi(trxId) {
         if (!confirm(`Yakin ingin menyetujui transaksi ${trxId}?`)) return;
@@ -955,7 +1232,7 @@
             globalPendingData = globalPendingData.filter((t) => t.id !== trxId);
             renderPendingList();
             fetchData();
-            fetchRiwayatData(); // Update riwayat
+            fetchRiwayatData();
           } else {
             alert("Gagal Approve: " + res.message);
             card.style.opacity = "1";
@@ -1138,12 +1415,26 @@
         switchView("home");
       };
 
-      // --- LOGIKA UTAMA CRUD OPNAME ---
       function toggleOpnameModal(show) {
         document
           .getElementById("opnameModal")
           .classList.toggle("hidden", !show);
-        if (!show) document.getElementById("formOpname").reset();
+        if (!show) {
+          document.getElementById("formOpname").reset();
+          const inputs = document.querySelectorAll(
+            "#formOpname input[readonly]",
+          );
+          document
+            .getElementById("opnameItemId")
+            .classList.remove(
+              "border-emerald-500",
+              "bg-emerald-50",
+              "text-emerald-700",
+            );
+          document
+            .getElementById("opnameItemId")
+            .classList.add("border-slate-200");
+        }
       }
 
       async function fetchOpnameData() {
@@ -1174,10 +1465,7 @@
           container.innerHTML += `
       <div class="border border-slate-200 rounded-xl p-3 shadow-sm bg-white hover:shadow-md transition text-xs">
         <div class="flex justify-between items-start mb-2">
-          <div>
-            <p class="font-extrabold text-slate-800 text-sm">${item.opnameid}</p>
-            <p class="text-[10px] text-slate-400 font-medium">${item.datetime}</p>
-          </div>
+          <div><p class="font-extrabold text-slate-800 text-sm">${item.opnameid}</p><p class="text-[10px] text-slate-400 font-medium">${item.datetime}</p></div>
           <span class="bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded">Stok: ${item.opnamestock} ${item.unit || ""}</span>
         </div>
         <div class="bg-slate-50 p-2 rounded-lg space-y-1 mb-2 text-slate-600">
@@ -1190,8 +1478,7 @@
           <button onclick="openOpnameModal('update', '${item.opnameid}')" class="text-blue-600 bg-blue-50 px-2.5 py-1 rounded font-bold hover:bg-blue-100 transition"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
           <button onclick="deleteOpname('${item.opnameid}')" class="text-red-600 bg-red-50 px-2.5 py-1 rounded font-bold hover:bg-red-100 transition"><i class="fa-solid fa-trash"></i> Hapus</button>
         </div>
-      </div>
-    `;
+      </div>`;
         });
       }
 
@@ -1244,7 +1531,6 @@
         const btn = document.getElementById("btnSubmitOpname");
         btn.disabled = true;
         btn.innerText = "Menyimpan...";
-
         const payload = {
           action:
             opnameCurrentMode === "create" ? "createOpname" : "updateOpname",
@@ -1261,7 +1547,6 @@
           opnameStock: Number(document.getElementById("opnameStock").value),
           details: document.getElementById("opnameDetails").value,
         };
-
         try {
           const response = await fetch(API_URL, {
             method: "POST",
@@ -1307,175 +1592,5 @@
         }
       }
     </script>
-
-    <div
-      id="opnameModal"
-      class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex justify-center items-end md:items-center p-0 md:p-4"
-    >
-      <div
-        class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md p-6 shadow-2xl h-[85vh] md:h-auto overflow-y-auto flex flex-col"
-      >
-        <div
-          class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4 sticky top-0 bg-white"
-        >
-          <h3 id="opnameModalTitle" class="font-bold text-slate-800 text-base">
-            Form Stock Opname
-          </h3>
-          <button
-            type="button"
-            onclick="toggleOpnameModal(false)"
-            class="text-slate-400 bg-slate-100 rounded-full w-8 h-8 flex justify-center items-center hover:bg-slate-200"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <form
-          id="formOpname"
-          class="space-y-3 text-xs flex-1"
-          onsubmit="handleOpnameSubmit(event)"
-        >
-          <input type="hidden" id="opnameFormId" />
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >ID Barang</label
-              >
-              <input
-                type="text"
-                id="opnameItemId"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-                required
-              />
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Nama Barang</label
-              >
-              <input
-                type="text"
-                id="opnameItemName"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Size</label
-              >
-              <input
-                type="text"
-                id="opnameSize"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Type</label
-              >
-              <input
-                type="text"
-                id="opnameType"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Serial No.</label
-              >
-              <input
-                type="text"
-                id="opnameSerial"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Brand</label
-              >
-              <input
-                type="text"
-                id="opnameBrand"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Exp. Date</label
-              >
-              <input
-                type="date"
-                id="opnameExpDate"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Unit</label
-              >
-              <input
-                type="text"
-                id="opnameUnit"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Location</label
-              >
-              <input
-                type="text"
-                id="opnameLocation"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-              />
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Opname Stock</label
-              >
-              <input
-                type="number"
-                id="opnameStock"
-                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label class="block font-semibold text-slate-500 mb-1"
-              >Details</label
-            >
-            <textarea
-              id="opnameDetails"
-              rows="2"
-              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
-            ></textarea>
-          </div>
-
-          <div class="pt-2">
-            <button
-              type="submit"
-              id="btnSubmitOpname"
-              class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition"
-            >
-              Simpan Data Opname
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
   </body>
 </html>
