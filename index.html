@@ -1,0 +1,1068 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory SARD Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+      .animate-slide-up {
+        animation: slideUp 0.3s ease-out forwards;
+      }
+      .custom-scroll::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-900 md:py-8 min-h-screen flex justify-center md:items-center relative"
+  >
+    <div
+      id="toastNotif"
+      class="fixed top-8 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none z-[100] translate-y-[-20px] border border-slate-600"
+    >
+      <div
+        class="w-7 h-7 bg-green-500 rounded-full flex justify-center items-center"
+      >
+        <i class="fa-solid fa-check text-white text-xs"></i>
+      </div>
+      <span id="toastText" class="text-sm font-semibold tracking-wide"
+        >Berhasil!</span
+      >
+    </div>
+
+    <div
+      class="w-full max-w-md bg-slate-50 min-h-screen md:min-h-[850px] md:rounded-3xl shadow-2xl relative flex flex-col pb-24"
+    >
+      <div
+        class="bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 pt-8 pb-16 px-6 md:rounded-t-3xl rounded-b-[2.5rem] relative shadow-lg overflow-hidden"
+      >
+        <div
+          class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-xl"
+        ></div>
+        <div class="flex justify-between items-center relative z-10">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex justify-center items-center border border-white/30 text-white font-bold text-lg"
+            >
+              R
+            </div>
+            <div>
+              <p class="text-xs text-blue-100/80 font-medium">
+                Inventory System
+              </p>
+              <p class="text-base text-white font-bold">Halo, Riyande 👋</p>
+            </div>
+          </div>
+          <button
+            onclick="fetchData()"
+            class="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex justify-center items-center text-white/90 hover:bg-white/20 transition"
+          >
+            <i id="refreshIcon" class="fa-solid fa-rotate text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="viewHome" class="block px-5 mt-[-2rem] flex-1 relative z-20">
+        <div class="grid grid-cols-2 gap-3">
+          <div
+            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+          >
+            <p class="text-xs text-slate-500 font-semibold relative z-10">
+              Total Barang
+            </p>
+            <h2
+              id="valTotalBarang"
+              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
+            >
+              -
+            </h2>
+            <div
+              class="absolute bottom-3 right-3 w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex justify-center items-center text-lg z-0"
+            >
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+          </div>
+          <div
+            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+          >
+            <p class="text-xs text-slate-500 font-semibold relative z-10">
+              Stok Rendah
+            </p>
+            <h2
+              id="valStokRendah"
+              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
+            >
+              -
+            </h2>
+            <div
+              class="absolute bottom-3 right-3 w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex justify-center items-center text-lg z-0"
+            >
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+          </div>
+          <div
+            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+          >
+            <p class="text-xs text-slate-500 font-semibold relative z-10">
+              Trans. Hari Ini
+            </p>
+            <h2
+              id="valTrxHari"
+              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
+            >
+              -
+            </h2>
+            <div
+              class="absolute bottom-3 right-3 w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex justify-center items-center text-lg z-0"
+            >
+              <i class="fa-solid fa-file-invoice"></i>
+            </div>
+          </div>
+          <div
+            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+          >
+            <p class="text-xs text-slate-500 font-semibold relative z-10">
+              Trans. Bulan Ini
+            </p>
+            <h2
+              id="valTrxBulan"
+              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
+            >
+              -
+            </h2>
+            <div
+              class="absolute bottom-3 right-3 w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex justify-center items-center text-lg z-0"
+            >
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="viewBarang" class="hidden px-5 mt-[-2rem] flex-1 relative z-20">
+        <div
+          class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
+        >
+          <div
+            class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
+          >
+            <h3 class="font-bold text-slate-800 text-sm">
+              📋 Daftar Semua Barang
+            </h3>
+            <span
+              class="text-xs font-semibold bg-blue-50 text-blue-600 px-2 py-1 rounded-lg"
+              id="badgeTotalTabel"
+              >0 item</span
+            >
+          </div>
+          <div class="p-3 bg-slate-50/50 border-b border-slate-100">
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <i
+                  class="fa-solid fa-magnifying-glass text-slate-400 text-xs"
+                ></i>
+              </div>
+              <input
+                type="text"
+                id="globalSearchInput"
+                oninput="handleGlobalSearch()"
+                placeholder="Cari ID, nama, atau kategori barang..."
+                class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-500 shadow-sm transition"
+              />
+            </div>
+          </div>
+          <div class="overflow-auto flex-1 custom-scroll">
+            <table class="w-full text-left text-xs whitespace-nowrap">
+              <thead class="bg-slate-50 sticky top-0 z-10 shadow-sm">
+                <tr>
+                  <th class="px-4 py-3 font-semibold text-slate-500">
+                    ID Barang
+                  </th>
+                  <th class="px-4 py-3 font-semibold text-slate-500">
+                    Kategori
+                  </th>
+                  <th class="px-4 py-3 font-semibold text-slate-500">
+                    Nama Barang
+                  </th>
+                  <th class="px-4 py-3 font-semibold text-slate-500">Satuan</th>
+                  <th class="px-4 py-3 font-semibold text-slate-500">
+                    Harga Satuan
+                  </th>
+                  <th
+                    class="px-4 py-3 font-semibold text-slate-500 text-center"
+                  >
+                    Masuk
+                  </th>
+                  <th
+                    class="px-4 py-3 font-semibold text-slate-500 text-center"
+                  >
+                    Keluar
+                  </th>
+                  <th
+                    class="px-4 py-3 font-semibold text-slate-500 text-center"
+                  >
+                    Terpakai
+                  </th>
+                  <th
+                    class="px-4 py-3 font-semibold text-slate-500 text-center bg-blue-50 text-blue-600"
+                  >
+                    Stok Saat Ini
+                  </th>
+                  <th
+                    class="px-4 py-3 font-semibold text-slate-500 text-center"
+                  >
+                    Stok Min
+                  </th>
+                  <th
+                    class="px-4 py-3 font-semibold text-slate-500 text-center"
+                  >
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tabelDataBarang" class="divide-y divide-slate-100">
+                <tr>
+                  <td colspan="11" class="text-center py-6 text-slate-400">
+                    Memuat data...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="viewRiwayat" class="hidden px-5 mt-[-2rem] flex-1 relative z-20">
+        <div
+          class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
+        >
+          <div
+            class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
+          >
+            <h3 class="font-bold text-slate-800 text-sm">
+              🕒 Riwayat Transaksi
+            </h3>
+            <span
+              class="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2 py-1 rounded-lg"
+              id="badgeTotalRiwayat"
+              >0 data</span
+            >
+          </div>
+
+          <div
+            class="p-3 bg-slate-50/50 border-b border-slate-100 grid grid-cols-2 gap-2"
+          >
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 mb-1"
+                >Mulai Tanggal</label
+              >
+              <input
+                type="date"
+                id="filterStartDate"
+                class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 mb-1"
+                >Sampai Tanggal</label
+              >
+              <input
+                type="date"
+                id="filterEndDate"
+                class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="col-span-2 flex gap-2 mt-1">
+              <button
+                onclick="applyFilterRiwayat()"
+                class="flex-1 bg-blue-600 text-white font-bold text-xs py-2 rounded-lg hover:bg-blue-700 shadow-md shadow-blue-600/20 transition flex justify-center items-center gap-1"
+              >
+                <i class="fa-solid fa-filter"></i> Filter Data
+              </button>
+              <button
+                onclick="resetFilterRiwayat()"
+                class="bg-slate-200 text-slate-600 font-bold text-xs px-3 py-2 rounded-lg hover:bg-slate-300 transition flex justify-center items-center"
+                title="Reset Filter"
+              >
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="riwayatListContainer"
+            class="overflow-auto flex-1 custom-scroll p-3 space-y-3 bg-slate-50/30"
+          >
+            <div class="text-center py-10 text-slate-400 text-sm">
+              Memuat data...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-100 px-4 py-2 flex justify-between items-center z-40 shadow-[0_-10px_24px_rgba(0,0,0,0.06)] md:rounded-b-3xl"
+      >
+        <button
+          id="navHome"
+          onclick="switchView('home')"
+          class="flex flex-col items-center gap-1 flex-1 text-blue-600 transition"
+        >
+          <i class="fa-solid fa-house text-lg"></i
+          ><span class="text-[10px] font-bold">Home</span>
+        </button>
+        <button
+          id="navBarang"
+          onclick="switchView('barang')"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition"
+        >
+          <i class="fa-solid fa-box text-lg"></i
+          ><span class="text-[10px] font-medium">Barang</span>
+        </button>
+
+        <div class="flex-1 flex justify-center -mt-8 relative z-50">
+          <button
+            onclick="toggleModal(true)"
+            class="w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex justify-center items-center shadow-lg shadow-blue-600/30 border-4 border-white transition transform active:scale-90"
+          >
+            <i class="fa-solid fa-plus text-xl"></i>
+          </button>
+        </div>
+
+        <button
+          onclick="toggleVerifikasiModal(true)"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition relative"
+        >
+          <i class="fa-solid fa-clipboard-check text-lg"></i
+          ><span class="text-[10px] font-medium">Verifikasi</span>
+          <span
+            id="badgePendingNotif"
+            class="hidden absolute top-0 right-3 md:right-5 w-2.5 h-2.5 bg-red-500 rounded-full border border-white"
+          ></span>
+        </button>
+
+        <button
+          id="navRiwayat"
+          onclick="switchView('riwayat')"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition"
+        >
+          <i class="fa-solid fa-clock-rotate-left text-lg"></i
+          ><span class="text-[10px] font-medium">Riwayat</span>
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="inputModal"
+      class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-end md:items-center p-0 md:p-4"
+    >
+      <div
+        class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md p-6 shadow-2xl animate-slide-up h-[85vh] md:h-auto overflow-y-auto flex flex-col pb-safe"
+      >
+        <div
+          class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4 sticky top-0 bg-white z-20"
+        >
+          <h3 class="font-bold text-slate-800 text-base">📦 Form Transaksi</h3>
+          <button
+            type="button"
+            onclick="toggleModal(false)"
+            class="text-slate-400 bg-slate-100 rounded-full w-8 h-8 flex justify-center items-center hover:bg-slate-200 transition"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <form
+          id="formTransaksi"
+          class="space-y-4 flex-1"
+          onsubmit="handleFormSubmit(event)"
+        >
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1"
+              >Kategori Transaksi</label
+            >
+            <select
+              id="formCategory"
+              onchange="updateFormFields()"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-blue-400"
+            >
+              <option value="MASUK">🟢 BARANG MASUK (IN)</option>
+              <option value="KELUAR">🔴 BARANG KELUAR (OUT)</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1"
+                >Applicant (Pemohon)</label
+              >
+              <input
+                type="text"
+                id="formApplicant"
+                placeholder="Nama..."
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-400"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1"
+                >Foto Bukti</label
+              >
+              <input
+                type="file"
+                id="formPhoto"
+                accept="image/*"
+                capture="environment"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-2 py-1.5 text-[10px] text-slate-700 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-blue-600"
+              />
+            </div>
+          </div>
+          <hr class="border-slate-100" />
+          <div id="wrapDynamic" class="grid grid-cols-2 gap-3">
+            <div id="wrapPO">
+              <label class="block text-xs font-semibold text-slate-500 mb-1"
+                >No PO</label
+              >
+              <input
+                type="text"
+                id="formNoPo"
+                placeholder="Nomor PO"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div id="wrapSupplier">
+              <label class="block text-xs font-semibold text-slate-500 mb-1"
+                >Supplier</label
+              >
+              <input
+                type="text"
+                id="formSupplier"
+                placeholder="Nama Supplier"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div id="wrapSection" class="hidden col-span-2">
+              <label class="block text-xs font-semibold text-slate-500 mb-1"
+                >Section (Tujuan)</label
+              >
+              <input
+                type="text"
+                id="formSection"
+                placeholder="Bagian / Area"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+          </div>
+          <hr class="border-slate-100" />
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1"
+              >Tambah Barang</label
+            >
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <i
+                  class="fa-solid fa-magnifying-glass text-slate-400 text-xs"
+                ></i>
+              </div>
+              <input
+                type="text"
+                id="searchInput"
+                oninput="filterBarang()"
+                placeholder="Cari nama barang atau ID..."
+                autocomplete="off"
+                class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-500 transition"
+              />
+              <div
+                id="searchDropdown"
+                class="hidden absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-xl max-h-40 overflow-y-auto custom-scroll"
+              ></div>
+            </div>
+          </div>
+          <div id="cartContainer" class="space-y-2 empty:hidden"></div>
+          <hr class="border-slate-100" />
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1"
+              >Catatan</label
+            >
+            <textarea
+              id="formCatatan"
+              rows="2"
+              placeholder="Tulis keterangan..."
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-400"
+            ></textarea>
+          </div>
+          <div class="pt-4 mt-auto sticky bottom-0 bg-white z-20 pb-2">
+            <button
+              type="submit"
+              id="btnSubmit"
+              class="w-full bg-blue-600 text-white font-bold text-xs py-3.5 rounded-xl shadow-lg shadow-blue-600/30 hover:bg-blue-700 transition"
+            >
+              <i class="fa-solid fa-cloud-arrow-up mr-2"></i>Simpan Transaksi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div
+      id="verifikasiModal"
+      class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-end md:items-center p-0 md:p-4"
+      onclick="toggleVerifikasiModal(false)"
+    >
+      <div
+        class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md p-6 shadow-2xl animate-slide-up h-[85vh] md:max-h-[80vh] flex flex-col"
+        onclick="event.stopPropagation()"
+      >
+        <div
+          class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4 shrink-0"
+        >
+          <div>
+            <h3 class="font-bold text-slate-800 text-base">
+              ✅ Verifikasi Transaksi
+            </h3>
+            <p class="text-[10px] text-slate-500">Approve Transaksi Pending</p>
+          </div>
+          <button
+            type="button"
+            onclick="toggleVerifikasiModal(false)"
+            class="text-slate-400 bg-slate-100 rounded-full w-8 h-8 flex justify-center items-center hover:bg-slate-200 transition"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div
+          id="pendingListContainer"
+          class="flex-1 overflow-y-auto custom-scroll space-y-3 pb-8"
+        >
+          <div class="text-center py-10 text-slate-400 text-sm">
+            <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i
+            ><br />Memuat data verifikasi...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbyOGfJRmC2i8pS8ePTrkAn_UJm3k2QPnDFwNUa0zhI8PBoupCQgbI_xABoqjkuk2bzh/exec";
+
+      let globalBarangData = [];
+      let globalPendingData = [];
+      let globalRiwayatData = [];
+      let cart = [];
+
+      // Modifikasi fungsi switchView agar mendukung Riwayat
+      function switchView(viewName) {
+        toggleVerifikasiModal(false);
+        toggleModal(false);
+
+        document
+          .getElementById("viewHome")
+          .classList.toggle("hidden", viewName !== "home");
+        document
+          .getElementById("viewBarang")
+          .classList.toggle("hidden", viewName !== "barang");
+        document
+          .getElementById("viewRiwayat")
+          .classList.toggle("hidden", viewName !== "riwayat");
+
+        document.getElementById("navHome").className =
+          viewName === "home"
+            ? "flex flex-col items-center gap-1 flex-1 text-blue-600 transition"
+            : "flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition";
+        document.getElementById("navBarang").className =
+          viewName === "barang"
+            ? "flex flex-col items-center gap-1 flex-1 text-blue-600 transition"
+            : "flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition";
+        document.getElementById("navRiwayat").className =
+          viewName === "riwayat"
+            ? "flex flex-col items-center gap-1 flex-1 text-blue-600 transition"
+            : "flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition";
+
+        // Otomatis mengambil data riwayat jika belum ada saat menu diklik
+        if (viewName === "riwayat" && globalRiwayatData.length === 0) {
+          fetchRiwayatData();
+        }
+      }
+
+      function showToast(text) {
+        document.getElementById("toastText").innerText = text;
+        const toast = document.getElementById("toastNotif");
+        toast.classList.remove("opacity-0", "translate-y-[-20px]");
+        setTimeout(
+          () => toast.classList.add("opacity-0", "translate-y-[-20px]"),
+          3000,
+        );
+      }
+
+      function toggleModal(show) {
+        document.getElementById("inputModal").classList.toggle("hidden", !show);
+        if (!show) {
+          cart = [];
+          renderCart();
+          document.getElementById("formTransaksi").reset();
+          updateFormFields();
+        }
+      }
+
+      function toggleVerifikasiModal(show) {
+        const modal = document.getElementById("verifikasiModal");
+        if (show) {
+          modal.classList.remove("hidden");
+          document.body.style.overflow = "hidden";
+          renderPendingList();
+        } else {
+          modal.classList.add("hidden");
+          document.body.style.overflow = "auto";
+        }
+      }
+
+      function updateFormFields() {
+        const cat = document.getElementById("formCategory").value;
+        const wrapPO = document.getElementById("wrapPO"),
+          wrapSupplier = document.getElementById("wrapSupplier"),
+          wrapSection = document.getElementById("wrapSection");
+        if (cat === "KELUAR") {
+          wrapPO.classList.add("hidden");
+          wrapSupplier.classList.add("hidden");
+          wrapSection.classList.remove("hidden");
+          document.getElementById("formSection").required = true;
+        } else {
+          wrapPO.classList.remove("hidden");
+          wrapSupplier.classList.remove("hidden");
+          wrapSection.classList.add("hidden");
+          document.getElementById("formSection").required = false;
+        }
+      }
+
+      const formatRupiah = (angka) =>
+        new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(angka);
+
+      function handleGlobalSearch() {
+        const query = document
+          .getElementById("globalSearchInput")
+          .value.toLowerCase();
+        const filteredData = globalBarangData.filter((item) => {
+          const id = item.id ? String(item.id).toLowerCase() : "";
+          const name = item.name ? item.name.toLowerCase() : "";
+          const category = item.category ? item.category.toLowerCase() : "";
+          return (
+            id.includes(query) ||
+            name.includes(query) ||
+            category.includes(query)
+          );
+        });
+        renderTabelBarang(filteredData);
+      }
+
+      function renderTabelBarang(dataListBarang) {
+        const tbody = document.getElementById("tabelDataBarang");
+        document.getElementById("badgeTotalTabel").innerText =
+          `${dataListBarang.length} item`;
+        tbody.innerHTML = "";
+        if (dataListBarang.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="11" class="text-center py-6 text-slate-400">Data tidak ditemukan.</td></tr>`;
+          return;
+        }
+        dataListBarang.forEach((item) => {
+          const tr = document.createElement("tr");
+          tr.className = "bg-white border-b hover:bg-slate-50 transition";
+          let statusColor =
+            item.stock <= item.minStock
+              ? "bg-red-100 text-red-600"
+              : "bg-emerald-100 text-emerald-600";
+          let statusText =
+            item.status && item.status.trim() !== ""
+              ? item.status
+              : item.stock <= item.minStock
+                ? "Restock"
+                : "Aman";
+          tr.innerHTML = `
+            <td class="px-4 py-3 font-medium text-slate-900">${item.id}</td>
+            <td class="px-4 py-3 text-slate-600">${item.category || "-"}</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">${item.name || "-"}</td>
+            <td class="px-4 py-3 text-slate-600">${item.unit || "-"}</td>
+            <td class="px-4 py-3 text-slate-600 font-medium">${formatRupiah(item.price || 0)}</td>
+            <td class="px-4 py-3 text-center text-slate-600">${item.stockIn || 0}</td>
+            <td class="px-4 py-3 text-center text-slate-600">${item.stockOut || 0}</td>
+            <td class="px-4 py-3 text-center text-slate-600">${item.stockUsed || 0}</td>
+            <td class="px-4 py-3 text-center font-bold text-slate-800 bg-blue-50/40">${item.stock || 0}</td>
+            <td class="px-4 py-3 text-center text-slate-400">${item.minStock || 0}</td>
+            <td class="px-4 py-3 text-center"><span class="px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-md ${statusColor}">${statusText.toUpperCase()}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function renderPendingList() {
+        const container = document.getElementById("pendingListContainer");
+        const badge = document.getElementById("badgePendingNotif");
+        if (globalPendingData.length === 0) {
+          container.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400"><i class="fa-solid fa-clipboard-check text-4xl mb-3 text-slate-200"></i><p class="text-xs font-medium">Yeay! Tidak ada transaksi yang perlu diverifikasi.</p></div>`;
+          badge.classList.add("hidden");
+          return;
+        }
+        badge.classList.remove("hidden");
+        container.innerHTML = "";
+        globalPendingData.forEach((trx) => {
+          let isMasuk = trx.category === "MASUK";
+          let catColor = isMasuk
+            ? "bg-emerald-100 text-emerald-700"
+            : "bg-rose-100 text-rose-700";
+          container.innerHTML += `
+             <div id="trx-${trx.id}" class="border border-slate-200 rounded-xl p-4 shadow-sm bg-slate-50/50 relative overflow-hidden">
+                <div class="flex justify-between items-start mb-3">
+                   <div><span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${catColor}">${trx.category}</span><p class="text-xs font-bold text-slate-800 mt-1">${trx.id} <span class="text-slate-400 font-normal">| ${trx.date || "-"}</span></p></div>
+                   <span class="text-[10px] font-bold px-2 py-1 rounded bg-amber-100 text-amber-600 border border-amber-200 animate-pulse">Pending</span>
+                </div>
+                <div class="text-xs text-slate-600 mb-3 space-y-1">
+                   <p><span class="font-semibold text-slate-500">Pemohon:</span> ${trx.applicant}</p>
+                   <p><span class="font-semibold text-slate-500">Item:</span> ${trx.itemCount} Barang</p>
+                   ${trx.catatan ? `<p><span class="font-semibold text-slate-500">Catatan:</span> ${trx.catatan}</p>` : ""}
+                </div>
+                <div class="flex gap-2">
+                   <button onclick="approveTransaksi('${trx.id}')" class="flex-1 bg-blue-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition flex justify-center items-center gap-1"><i class="fa-solid fa-check"></i> Approve</button>
+                </div>
+             </div>
+           `;
+        });
+      }
+
+      // --- LOGIKA RIWAYAT ---
+      async function fetchRiwayatData() {
+        const container = document.getElementById("riwayatListContainer");
+        container.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i><br />Memuat data riwayat...</div>`;
+        try {
+          const response = await fetch(API_URL + "?action=getRiwayat");
+          const data = await response.json();
+          if (data.status === "success") {
+            globalRiwayatData = data.data;
+            renderRiwayatList(globalRiwayatData);
+          } else {
+            container.innerHTML = `<div class="text-center py-10 text-rose-400 text-sm">Gagal memuat: ${data.message}</div>`;
+          }
+        } catch (err) {
+          container.innerHTML = `<div class="text-center py-10 text-rose-400 text-sm">Gagal terhubung ke server.</div>`;
+        }
+      }
+
+      function renderRiwayatList(dataToRender) {
+        const container = document.getElementById("riwayatListContainer");
+        document.getElementById("badgeTotalRiwayat").innerText =
+          `${dataToRender.length} data`;
+        container.innerHTML = "";
+
+        if (dataToRender.length === 0) {
+          container.innerHTML = `
+            <div class="flex flex-col items-center justify-center py-10 text-slate-400">
+              <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-200"></i>
+              <p class="text-xs font-medium">Tidak ada data riwayat ditemukan.</p>
+            </div>`;
+          return;
+        }
+
+        dataToRender.forEach((trx) => {
+          let isMasuk = trx.category === "MASUK";
+          let catColor = isMasuk
+            ? "bg-emerald-100 text-emerald-700"
+            : "bg-rose-100 text-rose-700";
+          let icon = isMasuk ? "fa-arrow-down" : "fa-arrow-up";
+          let statColor = trx.status.toLowerCase().includes("pending")
+            ? "text-amber-500"
+            : "text-slate-700";
+
+          container.innerHTML += `
+            <div class="border border-slate-200 rounded-xl p-3 shadow-sm bg-white hover:shadow-md transition">
+              <div class="flex justify-between items-start mb-2">
+                 <div class="flex gap-3 items-center">
+                   <div class="w-8 h-8 rounded-full ${isMasuk ? "bg-emerald-50 text-emerald-500" : "bg-rose-50 text-rose-500"} flex justify-center items-center shrink-0">
+                      <i class="fa-solid ${icon} text-sm"></i>
+                   </div>
+                   <div>
+                      <p class="text-xs font-extrabold text-slate-800">${trx.id}</p>
+                      <p class="text-[10px] text-slate-500 font-medium">${trx.dateStr}</p>
+                   </div>
+                 </div>
+                 <span class="text-[9px] font-bold px-2 py-1 rounded-md ${catColor}">${trx.category}</span>
+              </div>
+              <div class="text-xs bg-slate-50/50 p-2.5 rounded-lg border border-slate-100 mt-2">
+                 <p><span class="font-semibold text-slate-400">Pemohon:</span> <span class="font-medium text-slate-700">${trx.applicant || "-"}</span></p>
+                 <p><span class="font-semibold text-slate-400">Status:</span> <span class="font-bold ${statColor}">${trx.status || "-"}</span></p>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      function applyFilterRiwayat() {
+        const startInput = document.getElementById("filterStartDate").value;
+        const endInput = document.getElementById("filterEndDate").value;
+
+        if (!startInput || !endInput) {
+          alert("Pilih tanggal mulai & sampai terlebih dahulu!");
+          return;
+        }
+
+        const startDate = new Date(startInput);
+        startDate.setHours(0, 0, 0, 0);
+
+        const endDate = new Date(endInput);
+        endDate.setHours(23, 59, 59, 999);
+
+        const filtered = globalRiwayatData.filter((trx) => {
+          if (!trx.rawDate || trx.rawDate === "-") return false;
+          const trxDate = new Date(trx.rawDate);
+          return trxDate >= startDate && trxDate <= endDate;
+        });
+
+        renderRiwayatList(filtered);
+      }
+
+      function resetFilterRiwayat() {
+        document.getElementById("filterStartDate").value = "";
+        document.getElementById("filterEndDate").value = "";
+        renderRiwayatList(globalRiwayatData);
+      }
+      // --- END LOGIKA RIWAYAT ---
+
+      async function approveTransaksi(trxId) {
+        if (!confirm(`Yakin ingin menyetujui transaksi ${trxId}?`)) return;
+        const card = document.getElementById(`trx-${trxId}`);
+        card.style.opacity = "0.5";
+        card.style.pointerEvents = "none";
+        try {
+          const response = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              action: "approveTransaction",
+              transactionId: trxId,
+            }),
+          });
+          const res = await response.json();
+          if (res.status === "success") {
+            showToast("Transaksi Berhasil di-Approve!");
+            globalPendingData = globalPendingData.filter((t) => t.id !== trxId);
+            renderPendingList();
+            fetchData();
+            fetchRiwayatData(); // Update riwayat
+          } else {
+            alert("Gagal Approve: " + res.message);
+            card.style.opacity = "1";
+            card.style.pointerEvents = "auto";
+          }
+        } catch (err) {
+          alert("Gagal terhubung ke server.");
+          card.style.opacity = "1";
+          card.style.pointerEvents = "auto";
+        }
+      }
+
+      function filterBarang() {
+        const input = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const dropdown = document.getElementById("searchDropdown");
+        dropdown.innerHTML = "";
+        if (!input) {
+          dropdown.classList.add("hidden");
+          return;
+        }
+        const filtered = globalBarangData.filter(
+          (b) =>
+            (b.name || "").toLowerCase().includes(input) ||
+            (String(b.id) || "").toLowerCase().includes(input),
+        );
+        if (filtered.length === 0) {
+          dropdown.innerHTML = `<div class="p-3 text-xs text-slate-400 text-center">Barang tidak ditemukan</div>`;
+        } else {
+          filtered.forEach((item) => {
+            const div = document.createElement("div");
+            div.className =
+              "p-3 hover:bg-blue-50 cursor-pointer border-b border-slate-100 transition flex flex-col gap-1";
+            div.innerHTML = `<div class="flex justify-between items-start w-full"><div><p class="text-xs font-bold text-slate-700">${item.name || "Tanpa Nama"}</p><p class="text-[10px] text-slate-400">ID: ${item.id || "-"}</p></div><span class="text-[10px] font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-md whitespace-nowrap">Stok: ${item.stock || 0}</span></div>`;
+            div.onclick = () => {
+              addToCart(item);
+              document.getElementById("searchInput").value = "";
+              dropdown.classList.add("hidden");
+            };
+            dropdown.appendChild(div);
+          });
+        }
+        dropdown.classList.remove("hidden");
+      }
+      document.addEventListener("click", (e) => {
+        if (e.target.id !== "searchInput")
+          document.getElementById("searchDropdown").classList.add("hidden");
+      });
+
+      function addToCart(item) {
+        if (cart.length >= 5) {
+          alert("Maksimal 5 barang!");
+          return;
+        }
+        const existing = cart.find((c) => c.id === item.id);
+        if (existing) existing.qty += 1;
+        else cart.push({ id: item.id, name: item.name, qty: 1 });
+        renderCart();
+      }
+      function renderCart() {
+        const container = document.getElementById("cartContainer");
+        container.innerHTML = "";
+        cart.forEach((item, index) => {
+          container.innerHTML += `<div class="bg-blue-50/50 border border-blue-100 rounded-xl p-3 flex justify-between items-center"><div class="pr-6"><p class="text-xs font-bold text-slate-800">${item.name}</p><p class="text-[10px] text-slate-500">ID: ${item.id}</p></div><div class="flex gap-2 items-center"><span class="text-[10px] font-semibold text-slate-500">Qty:</span><input type="number" min="1" value="${item.qty}" onchange="cart[${index}].qty=Number(this.value)" class="w-14 bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs text-center border-b-2 border-blue-400 focus:outline-none"><button type="button" onclick="cart.splice(${index},1); renderCart()" class="text-red-400 hover:text-red-600 ml-2"><i class="fa-solid fa-trash-can text-sm"></i></button></div></div>`;
+        });
+      }
+      function getBase64(file) {
+        return new Promise((res, rej) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => res(reader.result.split(",")[1]);
+          reader.onerror = (error) => rej(error);
+        });
+      }
+
+      async function handleFormSubmit(e) {
+        e.preventDefault();
+        if (cart.length === 0) {
+          alert("Keranjang kosong!");
+          return;
+        }
+        const btn = document.getElementById("btnSubmit");
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Menyimpan...`;
+        btn.disabled = true;
+        let photoBase64 = "";
+        const fileInput = document.getElementById("formPhoto");
+        if (fileInput.files.length > 0) {
+          try {
+            photoBase64 = await getBase64(fileInput.files[0]);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+        const payload = {
+          action: "createInventoryCart",
+          category: document.getElementById("formCategory").value,
+          applicant: document.getElementById("formApplicant").value,
+          no_po: document.getElementById("formNoPo").value,
+          supplier: document.getElementById("formSupplier").value,
+          section: document.getElementById("formSection").value,
+          catatan: document.getElementById("formCatatan").value,
+          photoBase64: photoBase64,
+          items: cart,
+        };
+        try {
+          const response = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify(payload),
+          });
+          const resData = await response.json();
+          if (resData.status === "success") {
+            toggleModal(false);
+            showToast("Transaksi Disimpan (Menunggu Approval)!");
+            fetchData();
+          } else {
+            alert("Gagal dari server: " + resData.message);
+          }
+        } catch (err) {
+          alert("Gagal terhubung ke database.");
+        } finally {
+          btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i>Simpan Transaksi`;
+          btn.disabled = false;
+        }
+      }
+
+      async function fetchData() {
+        const icon = document.getElementById("refreshIcon");
+        icon.classList.add("fa-spin");
+        try {
+          const response = await fetch(
+            API_URL + "?action=getDashboardAndPending",
+          );
+          if (!response.ok) throw new Error("Gagal terhubung.");
+          const data = await response.json();
+          if (data.status === "success") {
+            if (data.totalBarang !== undefined)
+              document.getElementById("valTotalBarang").innerText =
+                data.totalBarang;
+            if (data.stokRendah !== undefined)
+              document.getElementById("valStokRendah").innerText =
+                data.stokRendah;
+            if (data.trxHariIni !== undefined)
+              document.getElementById("valTrxHari").innerText = data.trxHariIni;
+            if (data.trxBulanIni !== undefined)
+              document.getElementById("valTrxBulan").innerText =
+                data.trxBulanIni;
+            if (data.listBarang) {
+              globalBarangData = data.listBarang;
+              document.getElementById("globalSearchInput").value = "";
+              renderTabelBarang(globalBarangData);
+            }
+            if (data.listPending) {
+              globalPendingData = data.listPending;
+              const badge = document.getElementById("badgePendingNotif");
+              if (globalPendingData.length > 0) {
+                badge.classList.remove("hidden");
+              } else {
+                badge.classList.add("hidden");
+              }
+              if (
+                !document
+                  .getElementById("verifikasiModal")
+                  .classList.contains("hidden")
+              ) {
+                renderPendingList();
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error fetchData:", err);
+        } finally {
+          icon.classList.remove("fa-spin");
+        }
+      }
+
+      window.onload = () => {
+        updateFormFields();
+        fetchData();
+        switchView("home");
+      };
+    </script>
+  </body>
+</html>
