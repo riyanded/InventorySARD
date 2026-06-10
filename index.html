@@ -46,8 +46,81 @@
     </style>
   </head>
   <body
-    class="bg-slate-900 md:py-8 min-h-screen flex justify-center md:items-center relative"
+    class="bg-slate-900 md:py-8 min-h-screen flex justify-center md:items-start relative text-slate-800"
   >
+    <div
+      id="loginPage"
+      class="hidden fixed inset-0 z-[200] bg-gradient-to-tr from-blue-700 to-indigo-900 flex-col items-center justify-center p-4"
+    >
+      <div
+        class="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl animate-slide-up"
+      >
+        <div class="text-center mb-6">
+          <div
+            class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg shadow-blue-500/10"
+          >
+            <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+          <h2 class="text-xl font-black text-slate-800 tracking-tight">
+            Inventory System
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            Silakan masuk menggunakan akun terdaftar
+          </p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1"
+              >Username</label
+            >
+            <div class="relative">
+              <span
+                class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
+              >
+                <i class="fa-solid fa-user text-xs"></i>
+              </span>
+              <input
+                type="text"
+                id="loginUsername"
+                required
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-xs focus:outline-none focus:border-blue-500"
+                placeholder="Masukkan username"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1"
+              >Password</label
+            >
+            <div class="relative">
+              <span
+                class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
+              >
+                <i class="fa-solid fa-lock text-xs"></i>
+              </span>
+              <input
+                type="password"
+                id="loginPassword"
+                required
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-xs focus:outline-none focus:border-blue-500"
+                placeholder="Masukkan password"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            id="btnLogin"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg shadow-blue-600/20 mt-2"
+          >
+            Masuk ke Sistem
+          </button>
+        </form>
+      </div>
+    </div>
+
     <div
       id="toastNotif"
       class="fixed top-8 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none z-[100] translate-y-[-20px] border border-slate-600"
@@ -63,26 +136,55 @@
     </div>
 
     <div
-      class="w-full max-w-md bg-slate-50 min-h-screen md:min-h-[850px] md:rounded-3xl shadow-2xl relative flex flex-col pb-24"
+      id="mainDashboard"
+      class="hidden w-full max-w-md bg-slate-50 min-h-screen md:min-h-[850px] md:rounded-[2.5rem] shadow-2xl relative flex-col pb-24 overflow-x-hidden md:border-8 md:border-slate-800 md:my-auto"
     >
       <div
-        class="bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 pt-8 pb-16 px-6 md:rounded-t-3xl rounded-b-[2.5rem] relative shadow-lg overflow-hidden"
+        class="bg-gradient-to-r from-blue-600 to-blue-800 pt-6 pb-12 px-5 md:rounded-t-3xl rounded-b-[2rem] shadow-lg shadow-blue-600/10 relative overflow-hidden"
       >
-        <div
-          class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-xl"
-        ></div>
         <div class="flex justify-between items-center relative z-10">
           <div class="flex items-center gap-3">
-            <div
-              class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex justify-center items-center border border-white/30 text-white font-bold text-lg"
-            >
-              R
+            <div class="relative">
+              <button
+                onclick="toggleProfileDropdown(event)"
+                class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex justify-center items-center border border-white/30 text-white font-bold text-lg hover:bg-white/30 transition focus:outline-none z-50"
+              >
+                <span id="avatarLetter">R</span>
+              </button>
+              <div
+                id="profileDropdown"
+                class="hidden absolute left-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[200] animate-slide-up"
+              >
+                <div class="px-4 py-2.5 border-b border-slate-100">
+                  <p
+                    id="profileName"
+                    class="font-bold text-slate-800 text-xs truncate"
+                  >
+                    -
+                  </p>
+                  <p
+                    id="profileRole"
+                    class="text-[10px] text-slate-400 truncate font-medium"
+                  >
+                    -
+                  </p>
+                </div>
+                <button
+                  onclick="handleLogout()"
+                  class="w-full text-left px-4 py-2 text-xs text-red-600 hover:bg-red-50 font-bold flex items-center gap-2 transition"
+                >
+                  <i class="fa-solid fa-right-from-bracket text-[11px]"></i>
+                  Logout / Keluar
+                </button>
+              </div>
             </div>
             <div>
-              <p class="text-xs text-blue-100/80 font-medium">
+              <p class="text-[10px] text-blue-100/80 font-medium">
                 Inventory System
               </p>
-              <p class="text-base text-white font-bold">Halo, Riyande 👋</p>
+              <p id="welcomeName" class="text-sm text-white font-bold">
+                Halo, User 👋
+              </p>
             </div>
           </div>
           <button
@@ -92,330 +194,336 @@
             <i id="refreshIcon" class="fa-solid fa-rotate text-base"></i>
           </button>
         </div>
-      </div>
 
-      <div id="viewHome" class="block px-5 mt-[-2rem] flex-1 relative z-20">
-        <div class="grid grid-cols-2 gap-3">
-          <div
-            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
-          >
-            <p class="text-xs text-slate-500 font-semibold relative z-10">
-              Total Barang
-            </p>
-            <h2
-              id="valTotalBarang"
-              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
-            >
-              -
-            </h2>
+        <div id="viewHome" class="block px-5 mt-4 flex-1 relative z-10">
+          <div class="grid grid-cols-2 gap-3">
             <div
-              class="absolute bottom-3 right-3 w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex justify-center items-center text-lg z-0"
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
             >
-              <i class="fa-solid fa-box-open"></i>
-            </div>
-          </div>
-          <div
-            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
-          >
-            <p class="text-xs text-slate-500 font-semibold relative z-10">
-              Stok Rendah
-            </p>
-            <h2
-              id="valStokRendah"
-              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
-            >
-              -
-            </h2>
-            <div
-              class="absolute bottom-3 right-3 w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex justify-center items-center text-lg z-0"
-            >
-              <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-          </div>
-          <div
-            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
-          >
-            <p class="text-xs text-slate-500 font-semibold relative z-10">
-              Trans. Hari Ini
-            </p>
-            <h2
-              id="valTrxHari"
-              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
-            >
-              -
-            </h2>
-            <div
-              class="absolute bottom-3 right-3 w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex justify-center items-center text-lg z-0"
-            >
-              <i class="fa-solid fa-file-invoice"></i>
-            </div>
-          </div>
-          <div
-            class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
-          >
-            <p class="text-xs text-slate-500 font-semibold relative z-10">
-              Trans. Bulan Ini
-            </p>
-            <h2
-              id="valTrxBulan"
-              class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
-            >
-              -
-            </h2>
-            <div
-              class="absolute bottom-3 right-3 w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex justify-center items-center text-lg z-0"
-            >
-              <i class="fa-solid fa-calendar-check"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="viewBarang" class="hidden px-5 mt-[-2rem] flex-1 relative z-20">
-        <div
-          class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
-        >
-          <div
-            class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
-          >
-            <h3 class="font-bold text-slate-800 text-sm">
-              📦 Daftar Semua Barang
-            </h3>
-            <span
-              class="text-xs font-semibold bg-blue-50 text-blue-600 px-2 py-1 rounded-lg"
-              id="badgeTotalTabel"
-              >0 item</span
-            >
-          </div>
-          <div class="p-3 bg-slate-50/50 border-b border-slate-100">
-            <div class="relative">
+              <p class="text-xs text-slate-500 font-semibold relative z-10">
+                Total Barang
+              </p>
+              <h2
+                id="valTotalBarang"
+                class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
+              >
+                -
+              </h2>
               <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                class="absolute bottom-3 right-3 w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex justify-center items-center text-lg z-0"
               >
-                <i
-                  class="fa-solid fa-magnifying-glass text-slate-400 text-xs"
-                ></i>
+                <i class="fa-solid fa-box-open"></i>
               </div>
-              <input
-                type="text"
-                id="globalSearchInput"
-                oninput="handleGlobalSearch()"
-                placeholder="Cari ID, nama, atau kategori barang..."
-                class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-500 shadow-sm transition"
-              />
             </div>
-          </div>
-          <div class="overflow-auto flex-1 custom-scroll">
-            <table class="w-full text-left text-xs whitespace-nowrap">
-              <thead class="bg-slate-50 sticky top-0 z-10 shadow-sm">
-                <tr>
-                  <th class="px-4 py-3 font-semibold text-slate-500">
-                    ID Barang
-                  </th>
-                  <th class="px-4 py-3 font-semibold text-slate-500">
-                    Kategori
-                  </th>
-                  <th class="px-4 py-3 font-semibold text-slate-500">
-                    Nama Barang
-                  </th>
-                  <th class="px-4 py-3 font-semibold text-slate-500">Satuan</th>
-                  <th class="px-4 py-3 font-semibold text-slate-500">
-                    Harga Satuan
-                  </th>
-                  <th
-                    class="px-4 py-3 font-semibold text-slate-500 text-center"
-                  >
-                    Masuk
-                  </th>
-                  <th
-                    class="px-4 py-3 font-semibold text-slate-500 text-center"
-                  >
-                    Keluar
-                  </th>
-                  <th
-                    class="px-4 py-3 font-semibold text-slate-500 text-center"
-                  >
-                    Terpakai
-                  </th>
-                  <th
-                    class="px-4 py-3 font-semibold text-slate-500 text-center bg-blue-50 text-blue-600"
-                  >
-                    Stok Saat Ini
-                  </th>
-                  <th
-                    class="px-4 py-3 font-semibold text-slate-500 text-center"
-                  >
-                    Stok Min
-                  </th>
-                  <th
-                    class="px-4 py-3 font-semibold text-slate-500 text-center"
-                  >
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="tabelDataBarang" class="divide-y divide-slate-100">
-                <tr>
-                  <td colspan="11" class="text-center py-6 text-slate-400">
-                    Memuat data...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div id="viewRiwayat" class="hidden px-5 mt-[-2rem] flex-1 relative z-20">
-        <div
-          class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
-        >
-          <div
-            class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
-          >
-            <h3 class="font-bold text-slate-800 text-sm">
-              🕒 Riwayat Transaksi
-            </h3>
-            <span
-              class="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2 py-1 rounded-lg"
-              id="badgeTotalRiwayat"
-              >0 data</span
+            <div
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
             >
-          </div>
-
-          <div
-            class="p-3 bg-slate-50/50 border-b border-slate-100 grid grid-cols-2 gap-2"
-          >
-            <div>
-              <label class="block text-[10px] font-bold text-slate-500 mb-1"
-                >Mulai Tanggal</label
+              <p class="text-xs text-slate-500 font-semibold relative z-10">
+                Stok Rendah
+              </p>
+              <h2
+                id="valStokRendah"
+                class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
               >
-              <input
-                type="date"
-                id="filterStartDate"
-                class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-blue-500"
-              />
+                -
+              </h2>
+              <div
+                class="absolute bottom-3 right-3 w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex justify-center items-center text-lg z-0"
+              >
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
             </div>
-            <div>
-              <label class="block text-[10px] font-bold text-slate-500 mb-1"
-                >Sampai Tanggal</label
+            <div
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+            >
+              <p class="text-xs text-slate-500 font-semibold relative z-10">
+                Trans. Hari Ini
+              </p>
+              <h2
+                id="valTrxHari"
+                class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
               >
-              <input
-                type="date"
-                id="filterEndDate"
-                class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-blue-500"
-              />
+                -
+              </h2>
+              <div
+                class="absolute bottom-3 right-3 w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex justify-center items-center text-lg z-0"
+              >
+                <i class="fa-solid fa-file-invoice"></i>
+              </div>
             </div>
-            <div class="col-span-2 flex gap-2 mt-1">
-              <button
-                onclick="applyFilterRiwayat()"
-                class="flex-1 bg-blue-600 text-white font-bold text-xs py-2 rounded-lg hover:bg-blue-700 shadow-md shadow-blue-600/20 transition flex justify-center items-center gap-1"
+            <div
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+            >
+              <p class="text-xs text-slate-500 font-semibold relative z-10">
+                Trans. Bulan Ini
+              </p>
+              <h2
+                id="valTrxBulan"
+                class="text-3xl font-extrabold text-slate-800 relative z-10 mt-1"
               >
-                <i class="fa-solid fa-filter"></i> Filter Data
-              </button>
-              <button
-                onclick="resetFilterRiwayat()"
-                class="bg-slate-200 text-slate-600 font-bold text-xs px-3 py-2 rounded-lg hover:bg-slate-300 transition flex justify-center items-center"
-                title="Reset Filter"
+                -
+              </h2>
+              <div
+                class="absolute bottom-3 right-3 w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex justify-center items-center text-lg z-0"
               >
-                <i class="fa-solid fa-rotate-right"></i>
-              </button>
-            </div>
-          </div>
-
-          <div
-            id="riwayatListContainer"
-            class="overflow-auto flex-1 custom-scroll p-3 space-y-3 bg-slate-50/30"
-          >
-            <div class="text-center py-10 text-slate-400 text-sm">
-              Memuat data...
+                <i class="fa-solid fa-calendar-check"></i>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div id="viewOpname" class="hidden px-5 mt-[-2rem] flex-1 relative z-20">
-        <div
-          class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
-        >
+        <div id="viewBarang" class="hidden px-5 mt-4 flex-1 relative z-10">
           <div
-            class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
+            class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
           >
-            <h3 class="font-bold text-slate-800 text-sm">
-              📋 Data Stock Opname
-            </h3>
+            <div
+              class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
+            >
+              <h3 class="font-bold text-slate-800 text-sm">
+                📦 Daftar Semua Barang
+              </h3>
+              <span
+                class="text-xs font-semibold bg-blue-50 text-blue-600 px-2 py-1 rounded-lg"
+                id="badgeTotalTabel"
+                >0 item</span
+              >
+            </div>
+            <div class="p-3 bg-slate-50/50 border-b border-slate-100">
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i
+                    class="fa-solid fa-magnifying-glass text-slate-400 text-xs"
+                  ></i>
+                </div>
+                <input
+                  type="text"
+                  id="globalSearchInput"
+                  oninput="handleGlobalSearch()"
+                  placeholder="Cari ID, nama, atau kategori barang..."
+                  class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-500 shadow-sm transition"
+                />
+              </div>
+            </div>
+            <div class="overflow-auto flex-1 custom-scroll">
+              <table class="w-full text-left text-xs whitespace-nowrap">
+                <thead class="bg-slate-50 sticky top-0 z-10 shadow-sm">
+                  <tr>
+                    <th class="px-4 py-3 font-semibold text-slate-500">
+                      ID Barang
+                    </th>
+                    <th class="px-4 py-3 font-semibold text-slate-500">
+                      Kategori
+                    </th>
+                    <th class="px-4 py-3 font-semibold text-slate-500">
+                      Nama Barang
+                    </th>
+                    <th class="px-4 py-3 font-semibold text-slate-500">
+                      Satuan
+                    </th>
+                    <th class="px-4 py-3 font-semibold text-slate-500">
+                      Harga Satuan
+                    </th>
+                    <th
+                      class="px-4 py-3 font-semibold text-slate-500 text-center"
+                    >
+                      Masuk
+                    </th>
+                    <th
+                      class="px-4 py-3 font-semibold text-slate-500 text-center"
+                    >
+                      Keluar
+                    </th>
+                    <th
+                      class="px-4 py-3 font-semibold text-slate-500 text-center"
+                    >
+                      Terpakai
+                    </th>
+                    <th
+                      class="px-4 py-3 font-semibold text-slate-500 text-center bg-blue-50 text-blue-600"
+                    >
+                      Stok Saat Ini
+                    </th>
+                    <th
+                      class="px-4 py-3 font-semibold text-slate-500 text-center"
+                    >
+                      Stok Min
+                    </th>
+                    <th
+                      class="px-4 py-3 font-semibold text-slate-500 text-center"
+                    >
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="tabelDataBarang" class="divide-y divide-slate-100">
+                  <tr>
+                    <td colspan="11" class="text-center py-6 text-slate-400">
+                      Memuat data...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="viewRiwayat" class="hidden px-5 mt-4 flex-1 relative z-10">
+          <div
+            class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
+          >
+            <div
+              class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
+            >
+              <h3 class="font-bold text-slate-800 text-sm">
+                🕒 Riwayat Transaksi
+              </h3>
+              <span
+                class="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2 py-1 rounded-lg"
+                id="badgeTotalRiwayat"
+                >0 data</span
+              >
+            </div>
+            <div
+              class="p-3 bg-slate-50/50 border-b border-slate-100 grid grid-cols-2 gap-2"
+            >
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 mb-1"
+                  >Mulai Tanggal</label
+                >
+                <input
+                  type="date"
+                  id="filterStartDate"
+                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 mb-1"
+                  >Sampai Tanggal</label
+                >
+                <input
+                  type="date"
+                  id="filterEndDate"
+                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-slate-700 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div class="col-span-2 flex gap-2 mt-1">
+                <button
+                  onclick="applyFilterRiwayat()"
+                  class="flex-1 bg-blue-600 text-white font-bold text-xs py-2 rounded-lg hover:bg-blue-700 shadow-md shadow-blue-600/20 transition flex justify-center items-center gap-1"
+                >
+                  <i class="fa-solid fa-filter"></i> Filter Data
+                </button>
+                <button
+                  onclick="resetFilterRiwayat()"
+                  class="bg-slate-200 text-slate-600 font-bold text-xs px-3 py-2 rounded-lg hover:bg-slate-300 transition flex justify-center items-center"
+                  title="Reset Filter"
+                >
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+              </div>
+            </div>
+            <div
+              id="riwayatListContainer"
+              class="overflow-auto flex-1 custom-scroll p-3 space-y-3 bg-slate-50/30"
+            >
+              <div class="text-center py-10 text-slate-400 text-sm">
+                Memuat data...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="viewOpname" class="hidden px-5 mt-4 flex-1 relative z-10">
+          <div
+            class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
+          >
+            <div
+              class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
+            >
+              <h3 class="font-bold text-slate-800 text-sm">
+                📋 Data Stock Opname
+              </h3>
+              <button
+                onclick="openOpnameModal('create')"
+                class="bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-700 transition"
+              >
+                + Tambah
+              </button>
+            </div>
+            <div class="p-3 bg-slate-50/50 border-b border-slate-100">
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <i
+                    class="fa-solid fa-magnifying-glass text-slate-400 text-xs"
+                  ></i>
+                </div>
+                <input
+                  type="text"
+                  id="opnameSearchInput"
+                  oninput="handleOpnameSearch()"
+                  placeholder="Cari nama barang, ID, atau lokasi..."
+                  class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-500 shadow-sm transition"
+                />
+              </div>
+            </div>
+            <div
+              id="opnameListContainer"
+              class="overflow-auto flex-1 custom-scroll p-3 space-y-3 bg-slate-50/30"
+            >
+              <div class="text-center py-10 text-slate-400 text-xs">
+                Memuat data opname...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="viewUsers" class="hidden px-5 mt-4 flex-1 relative z-10">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-white">Manajemen User</h2>
             <button
-              onclick="openOpnameModal('create')"
-              class="bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-700 transition"
+              onclick="toggleUserModal(true)"
+              class="bg-white text-blue-600 px-3 py-2 rounded-xl text-xs font-bold shadow-sm hover:bg-blue-50 transition"
             >
-              + Tambah
+              <i class="fa-solid fa-plus mr-1"></i> Tambah
             </button>
           </div>
-          <div class="p-3 bg-slate-50/50 border-b border-slate-100">
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <i
-                  class="fa-solid fa-magnifying-glass text-slate-400 text-xs"
-                ></i>
-              </div>
-              <input
-                type="text"
-                id="opnameSearchInput"
-                oninput="handleOpnameSearch()"
-                placeholder="Cari nama barang, ID, atau lokasi..."
-                class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-700 focus:outline-none focus:border-blue-500 shadow-sm transition"
-              />
-            </div>
-          </div>
-          <div
-            id="opnameListContainer"
-            class="overflow-auto flex-1 custom-scroll p-3 space-y-3 bg-slate-50/30"
-          >
-            <div class="text-center py-10 text-slate-400 text-xs">
-              Memuat data opname...
+          <div id="userListContainer" class="space-y-3 pb-8">
+            <div class="text-center py-10 text-white text-xs">
+              <i class="fa-solid fa-spinner fa-spin"></i> Memuat data...
             </div>
           </div>
         </div>
       </div>
-
-      <div id="viewUsers" class="hidden px-5 mt-[-2rem] flex-1 relative z-20">
-        <div
-          class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px] justify-center items-center"
-        >
-          <i class="fa-solid fa-users text-5xl text-slate-200 mb-4"></i>
-          <h3 class="font-bold text-slate-800 text-sm">Halaman Users</h3>
-          <p class="text-xs text-slate-500">Fitur sedang dalam pengembangan</p>
-        </div>
-      </div>
-
       <div
-        class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-100 px-2 py-2 flex justify-between items-center z-40 shadow-[0_-10px_24px_rgba(0,0,0,0.06)] md:rounded-b-3xl"
+        class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-100 px-2 py-2 flex justify-between items-center z-40 shadow-[0_-10px_24px_rgba(0,0,0,0.06)] md:rounded-b-3xl"
       >
         <button
           id="navHome"
           onclick="switchView('home')"
-          class="flex flex-col items-center gap-1 flex-1 text-blue-600 transition"
+          class="flex flex-col items-center gap-1 flex-1 text-blue-600 transition font-bold"
         >
           <i class="fa-solid fa-house text-base"></i
-          ><span class="text-[9px] font-bold">Home</span>
+          ><span class="text-[9px]">Home</span>
         </button>
         <button
           id="navBarang"
           onclick="switchView('barang')"
-          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition font-medium"
         >
           <i class="fa-solid fa-box text-base"></i
-          ><span class="text-[9px] font-medium">Barang</span>
+          ><span class="text-[9px]">Barang</span>
         </button>
         <button
           id="navOpname"
           onclick="switchView('opname')"
-          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition font-medium"
         >
           <i class="fa-solid fa-boxes-stacked text-base"></i
-          ><span class="text-[9px] font-medium">Opname</span>
+          ><span class="text-[9px]">Opname</span>
         </button>
 
         <div class="flex-1 flex justify-center -mt-8 relative z-50">
@@ -429,10 +537,10 @@
 
         <button
           onclick="toggleVerifikasiModal(true)"
-          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition relative"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition relative font-medium"
         >
           <i class="fa-solid fa-clipboard-check text-base"></i
-          ><span class="text-[9px] font-medium">Verifikasi</span>
+          ><span class="text-[9px]">Verifikasi</span>
           <span
             id="badgePendingNotif"
             class="hidden absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"
@@ -441,22 +549,21 @@
         <button
           id="navRiwayat"
           onclick="switchView('riwayat')"
-          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition font-medium"
         >
           <i class="fa-solid fa-clock-rotate-left text-base"></i
-          ><span class="text-[9px] font-medium">Riwayat</span>
+          ><span class="text-[9px]">Riwayat</span>
         </button>
         <button
           id="navUsers"
           onclick="switchView('users')"
-          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition"
+          class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition font-medium"
         >
           <i class="fa-solid fa-users text-base"></i
-          ><span class="text-[9px] font-medium">Users</span>
+          ><span class="text-[9px]">Users</span>
         </button>
       </div>
     </div>
-
     <div
       id="inputModal"
       class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-end md:items-center p-0 md:p-4"
@@ -648,11 +755,133 @@
     </div>
 
     <div
+      id="userModal"
+      class="hidden fixed inset-0 z-[100] bg-black/80 flex justify-center items-end sm:items-center p-0 md:p-4"
+      onclick="toggleUserModal(false)"
+    >
+      <div
+        class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-6 animate-slide-up relative flex flex-col h-[85vh] md:h-auto overflow-y-auto pb-safe"
+        onclick="event.stopPropagation()"
+      >
+        <div
+          class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4 shrink-0"
+        >
+          <h3 id="userModalTitle" class="font-bold text-slate-800 text-base">
+            Tambah User
+          </h3>
+          <button
+            type="button"
+            onclick="toggleUserModal(false)"
+            class="text-slate-400 hover:text-red-500 bg-slate-100 rounded-full w-8 h-8 flex items-center justify-center"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form
+          id="formUser"
+          onsubmit="handleUserSubmit(event)"
+          class="space-y-3 text-xs flex-1"
+        >
+          <input type="hidden" id="userTimestamp" />
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Nama Lengkap</label
+              ><input
+                type="text"
+                id="userName"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
+                required
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Username</label
+              ><input
+                type="text"
+                id="userUsername"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
+                required
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Password</label
+              ><input
+                type="password"
+                id="userPassword"
+                placeholder="Masukkan password"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
+                required
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Section / Divisi</label
+              ><input
+                type="text"
+                id="userSection"
+                placeholder="Misal: IT, Procurement"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-500 mb-1"
+              >Role Akses</label
+            >
+            <select
+              id="userRole"
+              class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
+              required
+            >
+              <option value="Superadmin">Superadmin</option>
+              <option value="Admin">Admin</option>
+              <option value="Head">Head</option>
+              <option value="Karyawan">Karyawan</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >No Telegram</label
+              ><input
+                type="text"
+                id="userNoTelegram"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-500 mb-1"
+                >Chat ID</label
+              ><input
+                type="text"
+                id="userChatId"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            id="btnSubmitUser"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl mt-4 transition shadow-lg shadow-blue-600/20"
+          >
+            Simpan Data User
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div
       id="opnameModal"
       class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex justify-center items-end md:items-center p-0 md:p-4"
     >
       <div
-        class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md p-6 shadow-2xl h-[85vh] md:h-auto overflow-y-auto flex flex-col"
+        class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md p-6 shadow-2xl h-[85vh] md:h-auto overflow-y-auto flex flex-col pb-safe"
       >
         <div
           class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4 sticky top-0 bg-white"
@@ -674,7 +903,6 @@
           onsubmit="handleOpnameSubmit(event)"
         >
           <input type="hidden" id="opnameFormId" />
-
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block font-semibold text-slate-500 mb-1"
@@ -684,7 +912,7 @@
                 <input
                   type="text"
                   id="opnameItemId"
-                  placeholder="Ketik ID atau Scan QR..."
+                  placeholder="Ketik ID / Scan QR..."
                   class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 pr-12 focus:outline-none focus:border-blue-400 uppercase"
                   required
                 />
@@ -697,52 +925,10 @@
                 </button>
               </div>
             </div>
-
-            <div
-              id="qrModal"
-              class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
-            >
-              <div
-                class="bg-white rounded-2xl w-full max-w-md p-6 relative animate-slide-up"
-              >
-                <button
-                  id="closeQrModal"
-                  class="absolute top-4 right-4 text-slate-400 hover:text-red-500 z-10"
-                >
-                  <i class="fa-solid fa-xmark text-2xl"></i>
-                </button>
-                <h3 class="text-xl font-bold text-slate-800 mb-4 text-center">
-                  Scan QR Code
-                </h3>
-
-                <div
-                  id="qr-reader"
-                  class="w-full overflow-hidden rounded-xl"
-                ></div>
-
-                <p class="text-sm text-center text-slate-500 mt-4">
-                  Arahkan kamera ke QR Code barang
-                </p>
-              </div>
-            </div>
-            <div id="qrModal" class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4">
-  <div id="qrModal" class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl w-full max-w-md p-6 relative animate-slide-up">
-    <button id="closeQrModal" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 z-10">
-      <i class="fa-solid fa-xmark text-2xl"></i>
-    </button>
-    <h3 class="text-xl font-bold text-slate-800 mb-4 text-center">Scan QR Code</h3>
-    
-    <div id="qr-reader" class="w-full overflow-hidden rounded-xl"></div>
-    
-    <p class="text-sm text-center text-slate-500 mt-4">Arahkan kamera ke QR Code barang</p>
-  </div>
-</div>
             <div>
               <label class="block font-semibold text-slate-500 mb-1"
                 >Nama Barang</label
-              >
-              <input
+              ><input
                 type="text"
                 id="opnameItemName"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -751,13 +937,10 @@
               />
             </div>
           </div>
-
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Size</label
-              >
-              <input
+              <label class="block font-semibold text-slate-500 mb-1">Size</label
+              ><input
                 type="text"
                 id="opnameSize"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -765,10 +948,8 @@
               />
             </div>
             <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Type</label
-              >
-              <input
+              <label class="block font-semibold text-slate-500 mb-1">Type</label
+              ><input
                 type="text"
                 id="opnameType"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -776,13 +957,11 @@
               />
             </div>
           </div>
-
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block font-semibold text-slate-500 mb-1"
                 >Serial No.</label
-              >
-              <input
+              ><input
                 type="text"
                 id="opnameSerial"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -792,8 +971,7 @@
             <div>
               <label class="block font-semibold text-slate-500 mb-1"
                 >Brand</label
-              >
-              <input
+              ><input
                 type="text"
                 id="opnameBrand"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -801,13 +979,11 @@
               />
             </div>
           </div>
-
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block font-semibold text-slate-500 mb-1"
                 >Exp. Date</label
-              >
-              <input
+              ><input
                 type="date"
                 id="opnameExpDate"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -815,10 +991,8 @@
               />
             </div>
             <div>
-              <label class="block font-semibold text-slate-500 mb-1"
-                >Unit</label
-              >
-              <input
+              <label class="block font-semibold text-slate-500 mb-1">Unit</label
+              ><input
                 type="text"
                 id="opnameUnit"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -826,13 +1000,11 @@
               />
             </div>
           </div>
-
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block font-semibold text-slate-500 mb-1"
                 >Location</label
-              >
-              <input
+              ><input
                 type="text"
                 id="opnameLocation"
                 class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 focus:outline-none text-slate-500 cursor-not-allowed"
@@ -842,8 +1014,7 @@
             <div>
               <label class="block font-semibold text-slate-800 mb-1"
                 >Opname Stock</label
-              >
-              <input
+              ><input
                 type="number"
                 id="opnameStock"
                 class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500 font-bold text-slate-800"
@@ -851,18 +1022,15 @@
               />
             </div>
           </div>
-
           <div>
             <label class="block font-semibold text-slate-800 mb-1"
               >Details</label
-            >
-            <textarea
+            ><textarea
               id="opnameDetails"
               rows="2"
               class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500 text-slate-700"
             ></textarea>
           </div>
-
           <div class="pt-2">
             <button
               type="submit"
@@ -876,9 +1044,32 @@
       </div>
     </div>
 
+    <div
+      id="qrModal"
+      class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-white rounded-2xl w-full max-w-md p-6 relative animate-slide-up"
+      >
+        <button
+          id="closeQrModal"
+          class="absolute top-4 right-4 text-slate-400 hover:text-red-500 z-10"
+        >
+          <i class="fa-solid fa-xmark text-2xl"></i>
+        </button>
+        <h3 class="text-xl font-bold text-slate-800 mb-4 text-center">
+          Scan QR Code
+        </h3>
+        <div id="qr-reader" class="w-full overflow-hidden rounded-xl"></div>
+        <p class="text-sm text-center text-slate-500 mt-4">
+          Arahkan kamera ke QR Code barang
+        </p>
+      </div>
+    </div>
+
     <script>
       const API_URL =
-        "https://script.google.com/macros/s/AKfycbzxqe9nFL9yl8qNTL7hqcmiZu4pJlXD9JVBeQKfLXlj-PFYsl8cw41z5js1yvR0G1ZG/exec";
+        "https://script.google.com/macros/s/AKfycby-JDXyEsWiV2A5lK8MGq5aX6ZpvBpsXikM75cXs4bdGJNpHq-iGke0j8ct__s8gpjH/exec";
 
       let globalBarangData = [];
       let globalPendingData = [];
@@ -886,6 +1077,8 @@
       let cart = [];
       let globalOpnameData = [];
       let opnameCurrentMode = "create";
+      let globalUsers = [];
+      let html5QrcodeScanner;
 
       // EVENT LISTENER AUTO-FILL OPNAME SAAT KETIK ID BARANG
       document.addEventListener("DOMContentLoaded", () => {
@@ -893,15 +1086,12 @@
           .getElementById("opnameItemId")
           .addEventListener("input", function (e) {
             const inputId = e.target.value.trim().toUpperCase();
-
-            // Cari barang di data global yang diambil dari server
             const barang = globalBarangData.find(
               (item) =>
                 String(item.id || item.Id || item.ID).toUpperCase() === inputId,
             );
 
             if (barang) {
-              // Menggunakan fallback (||) untuk mengantisipasi perbedaan huruf besar/kecil/nama kolom dari Google Sheets
               document.getElementById("opnameItemName").value =
                 barang.name || barang.Name || barang.nama || barang.Nama || "";
               document.getElementById("opnameSize").value =
@@ -931,7 +1121,6 @@
                 barang.Merk ||
                 "";
 
-              // Parsing Exp Date
               let exp =
                 barang.expDate ||
                 barang.expdate ||
@@ -942,13 +1131,9 @@
               if (exp && exp !== "-") {
                 try {
                   const d = new Date(exp);
-                  if (!isNaN(d)) {
-                    document.getElementById("opnameExpDate").value = d
-                      .toISOString()
-                      .split("T")[0];
-                  } else {
-                    document.getElementById("opnameExpDate").value = "";
-                  }
+                  document.getElementById("opnameExpDate").value = !isNaN(d)
+                    ? d.toISOString().split("T")[0]
+                    : "";
                 } catch (err) {
                   document.getElementById("opnameExpDate").value = "";
                 }
@@ -969,15 +1154,12 @@
                 barang.Lokasi ||
                 "";
 
-              // Ubah border menjadi hijau (Indikator Ditemukan)
-              e.target.classList.remove("border-slate-200");
-              e.target.classList.add(
+              e.target.classList.replace(
+                "border-slate-200",
                 "border-emerald-500",
-                "bg-emerald-50",
-                "text-emerald-700",
               );
+              e.target.classList.add("bg-emerald-50", "text-emerald-700");
             } else {
-              // Kosongkan otomatis jika ID dihapus / tidak ditemukan
               const fields = [
                 "opnameItemName",
                 "opnameSize",
@@ -989,18 +1171,16 @@
                 "opnameLocation",
               ];
               fields.forEach((id) => (document.getElementById(id).value = ""));
-
-              // Reset border (Indikator Normal)
-              e.target.classList.remove(
+              e.target.classList.replace(
                 "border-emerald-500",
-                "bg-emerald-50",
-                "text-emerald-700",
+                "border-slate-200",
               );
-              e.target.classList.add("border-slate-200");
+              e.target.classList.remove("bg-emerald-50", "text-emerald-700");
             }
           });
       });
 
+      // Pindah Halaman Menu (Switch View)
       function switchView(viewName) {
         toggleVerifikasiModal(false);
         toggleModal(false);
@@ -1026,10 +1206,13 @@
         menus.forEach((menu) => {
           const el = document.getElementById("nav" + menu);
           if (el) {
-            el.className =
-              viewName === menu.toLowerCase()
-                ? "flex flex-col items-center gap-1 flex-1 text-blue-600 transition font-bold"
-                : "flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition font-medium";
+            if (viewName === menu.toLowerCase()) {
+              el.className =
+                "flex flex-col items-center gap-1 flex-1 text-blue-600 transition font-bold";
+            } else {
+              el.className =
+                "flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition font-medium";
+            }
           }
         });
 
@@ -1067,6 +1250,21 @@
         } else {
           modal.classList.add("hidden");
           document.body.style.overflow = "auto";
+        }
+      }
+
+      function toggleUserModal(show) {
+        const modal = document.getElementById("userModal");
+        if (show) {
+          modal.classList.remove("hidden");
+          if (document.getElementById("userTimestamp").value === "") {
+            document.getElementById("userModalTitle").innerText = "Tambah User";
+            document.getElementById("formUser").reset();
+          }
+        } else {
+          modal.classList.add("hidden");
+          document.getElementById("formUser").reset();
+          document.getElementById("userTimestamp").value = "";
         }
       }
 
@@ -1135,18 +1333,18 @@
                 ? "Restock"
                 : "Aman";
           tr.innerHTML = `
-            <td class="px-4 py-3 font-medium text-slate-900">${item.id}</td>
-            <td class="px-4 py-3 text-slate-600">${item.category || "-"}</td>
-            <td class="px-4 py-3 font-semibold text-slate-800">${item.name || "-"}</td>
-            <td class="px-4 py-3 text-slate-600">${item.unit || "-"}</td>
-            <td class="px-4 py-3 text-slate-600 font-medium">${formatRupiah(item.price || 0)}</td>
-            <td class="px-4 py-3 text-center text-slate-600">${item.stockIn || 0}</td>
-            <td class="px-4 py-3 text-center text-slate-600">${item.stockOut || 0}</td>
-            <td class="px-4 py-3 text-center text-slate-600">${item.stockUsed || 0}</td>
-            <td class="px-4 py-3 text-center font-bold text-slate-800 bg-blue-50/40">${item.stock || 0}</td>
-            <td class="px-4 py-3 text-center text-slate-400">${item.minStock || 0}</td>
-            <td class="px-4 py-3 text-center"><span class="px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-md ${statusColor}">${statusText.toUpperCase()}</span></td>
-          `;
+          <td class="px-4 py-3 font-medium text-slate-900">${item.id}</td>
+          <td class="px-4 py-3 text-slate-600">${item.category || "-"}</td>
+          <td class="px-4 py-3 font-semibold text-slate-800">${item.name || "-"}</td>
+          <td class="px-4 py-3 text-slate-600">${item.unit || "-"}</td>
+          <td class="px-4 py-3 text-slate-600 font-medium">${formatRupiah(item.price || 0)}</td>
+          <td class="px-4 py-3 text-center text-slate-600">${item.stockIn || 0}</td>
+          <td class="px-4 py-3 text-center text-slate-600">${item.stockOut || 0}</td>
+          <td class="px-4 py-3 text-center text-slate-600">${item.stockUsed || 0}</td>
+          <td class="px-4 py-3 text-center font-bold text-slate-800 bg-blue-50/40">${item.stock || 0}</td>
+          <td class="px-4 py-3 text-center text-slate-400">${item.minStock || 0}</td>
+          <td class="px-4 py-3 text-center"><span class="px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-md ${statusColor}">${statusText.toUpperCase()}</span></td>
+        `;
           tbody.appendChild(tr);
         });
       }
@@ -1167,21 +1365,21 @@
             ? "bg-emerald-100 text-emerald-700"
             : "bg-rose-100 text-rose-700";
           container.innerHTML += `
-             <div id="trx-${trx.id}" class="border border-slate-200 rounded-xl p-4 shadow-sm bg-slate-50/50 relative overflow-hidden">
-                <div class="flex justify-between items-start mb-3">
-                   <div><span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${catColor}">${trx.category}</span><p class="text-xs font-bold text-slate-800 mt-1">${trx.id} <span class="text-slate-400 font-normal">| ${trx.date || "-"}</span></p></div>
-                   <span class="text-[10px] font-bold px-2 py-1 rounded bg-amber-100 text-amber-600 border border-amber-200 animate-pulse">Pending</span>
-                </div>
-                <div class="text-xs text-slate-600 mb-3 space-y-1">
-                   <p><span class="font-semibold text-slate-500">Pemohon:</span> ${trx.applicant}</p>
-                   <p><span class="font-semibold text-slate-500">Item:</span> ${trx.itemCount} Barang</p>
-                   ${trx.catatan ? `<p><span class="font-semibold text-slate-500">Catatan:</span> ${trx.catatan}</p>` : ""}
-                </div>
-                <div class="flex gap-2">
-                   <button onclick="approveTransaksi('${trx.id}')" class="flex-1 bg-blue-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition flex justify-center items-center gap-1"><i class="fa-solid fa-check"></i> Approve</button>
-                </div>
-             </div>
-           `;
+           <div id="trx-${trx.id}" class="border border-slate-200 rounded-xl p-4 shadow-sm bg-slate-50/50 relative overflow-hidden">
+              <div class="flex justify-between items-start mb-3">
+                 <div><span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${catColor}">${trx.category}</span><p class="text-xs font-bold text-slate-800 mt-1">${trx.id} <span class="text-slate-400 font-normal">| ${trx.date || "-"}</span></p></div>
+                 <span class="text-[10px] font-bold px-2 py-1 rounded bg-amber-100 text-amber-600 border border-amber-200 animate-pulse">Pending</span>
+              </div>
+              <div class="text-xs text-slate-600 mb-3 space-y-1">
+                 <p><span class="font-semibold text-slate-500">Pemohon:</span> ${trx.applicant}</p>
+                 <p><span class="font-semibold text-slate-500">Item:</span> ${trx.itemCount} Barang</p>
+                 ${trx.catatan ? `<p><span class="font-semibold text-slate-500">Catatan:</span> ${trx.catatan}</p>` : ""}
+              </div>
+              <div class="flex gap-2">
+                 <button onclick="approveTransaksi('${trx.id}')" class="flex-1 bg-blue-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition flex justify-center items-center gap-1"><i class="fa-solid fa-check"></i> Approve</button>
+              </div>
+           </div>
+         `;
         });
       }
 
@@ -1222,20 +1420,20 @@
             : "text-slate-700";
 
           container.innerHTML += `
-            <div class="border border-slate-200 rounded-xl p-3 shadow-sm bg-white hover:shadow-md transition">
-              <div class="flex justify-between items-start mb-2">
-                 <div class="flex gap-3 items-center">
-                   <div class="w-8 h-8 rounded-full ${isMasuk ? "bg-emerald-50 text-emerald-500" : "bg-rose-50 text-rose-500"} flex justify-center items-center shrink-0"><i class="fa-solid ${icon} text-sm"></i></div>
-                   <div><p class="text-xs font-extrabold text-slate-800">${trx.id}</p><p class="text-[10px] text-slate-500 font-medium">${trx.dateStr}</p></div>
-                 </div>
-                 <span class="text-[9px] font-bold px-2 py-1 rounded-md ${catColor}">${trx.category}</span>
-              </div>
-              <div class="text-xs bg-slate-50/50 p-2.5 rounded-lg border border-slate-100 mt-2">
-                 <p><span class="font-semibold text-slate-400">Pemohon:</span> <span class="font-medium text-slate-700">${trx.applicant || "-"}</span></p>
-                 <p><span class="font-semibold text-slate-400">Status:</span> <span class="font-bold ${statColor}">${trx.status || "-"}</span></p>
-              </div>
+          <div class="border border-slate-200 rounded-xl p-3 shadow-sm bg-white hover:shadow-md transition">
+            <div class="flex justify-between items-start mb-2">
+               <div class="flex gap-3 items-center">
+                 <div class="w-8 h-8 rounded-full ${isMasuk ? "bg-emerald-50 text-emerald-500" : "bg-rose-50 text-rose-500"} flex justify-center items-center shrink-0"><i class="fa-solid ${icon} text-sm"></i></div>
+                 <div><p class="text-xs font-extrabold text-slate-800">${trx.id}</p><p class="text-[10px] text-slate-500 font-medium">${trx.dateStr}</p></div>
+               </div>
+               <span class="text-[9px] font-bold px-2 py-1 rounded-md ${catColor}">${trx.category}</span>
             </div>
-          `;
+            <div class="text-xs bg-slate-50/50 p-2.5 rounded-lg border border-slate-100 mt-2">
+               <p><span class="font-semibold text-slate-400">Pemohon:</span> <span class="font-medium text-slate-700">${trx.applicant || "-"}</span></p>
+               <p><span class="font-semibold text-slate-400">Status:</span> <span class="font-bold ${statColor}">${trx.status || "-"}</span></p>
+            </div>
+          </div>
+        `;
         });
       }
 
@@ -1329,10 +1527,6 @@
         }
         dropdown.classList.remove("hidden");
       }
-      document.addEventListener("click", (e) => {
-        if (e.target.id !== "searchInput")
-          document.getElementById("searchDropdown").classList.add("hidden");
-      });
 
       function addToCart(item) {
         if (cart.length >= 5) {
@@ -1460,78 +1654,18 @@
         }
       }
 
-      // ==========================================
-// FITUR SCANNER QR CODE OPNAME
-// ==========================================
-let html5QrcodeScanner;
-
-// Buka Modal dan Nyalakan Kamera
-document.getElementById("btnScanQR").addEventListener("click", () => {
-  document.getElementById("qrModal").classList.remove("hidden");
-  
-  // Inisialisasi Scanner
-  html5QrcodeScanner = new Html5QrcodeScanner(
-    "qr-reader",
-    { fps: 10, qrbox: {width: 250, height: 250} },
-    /* verbose= */ false
-  );
-  
-  html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-});
-
-// Jika berhasil scan
-function onScanSuccess(decodedText, decodedResult) {
-  // Matikan kamera & tutup modal
-  html5QrcodeScanner.clear();
-  document.getElementById("qrModal").classList.add("hidden");
-
-  // Isi teks hasil scan ke input ID Barang
-  const inputElement = document.getElementById("opnameItemId");
-  inputElement.value = decodedText;
-
-  // PENTING: Memicu event 'input' secara paksa agar fitur auto-fill yang 
-  // sudah kamu buat sebelumnya langsung merespon dan mengisi form lainnya
-  inputElement.dispatchEvent(new Event('input', { bubbles: true }));
-}
-
-// Jika gagal / sedang mencari (biarkan kosong agar tidak spam console)
-function onScanFailure(error) {
-  // console.warn(`Code scan error = ${error}`);
-}
-
-// Tutup Modal lewat tombol X
-document.getElementById("closeQrModal").addEventListener("click", () => {
-  document.getElementById("qrModal").classList.add("hidden");
-  if (html5QrcodeScanner) {
-    html5QrcodeScanner.clear(); // Matikan kamera jika di-cancel
-  }
-});
-
-      window.onload = () => {
-        updateFormFields();
-        fetchData();
-        switchView("home");
-      };
-
       function toggleOpnameModal(show) {
         document
           .getElementById("opnameModal")
           .classList.toggle("hidden", !show);
         if (!show) {
           document.getElementById("formOpname").reset();
-          const inputs = document.querySelectorAll(
-            "#formOpname input[readonly]",
-          );
           document
             .getElementById("opnameItemId")
-            .classList.remove(
-              "border-emerald-500",
-              "bg-emerald-50",
-              "text-emerald-700",
-            );
+            .classList.replace("border-emerald-500", "border-slate-200");
           document
             .getElementById("opnameItemId")
-            .classList.add("border-slate-200");
+            .classList.remove("bg-emerald-50", "text-emerald-700");
         }
       }
 
@@ -1561,22 +1695,22 @@ document.getElementById("closeQrModal").addEventListener("click", () => {
         }
         dataList.forEach((item) => {
           container.innerHTML += `
-      <div class="border border-slate-200 rounded-xl p-3 shadow-sm bg-white hover:shadow-md transition text-xs">
-        <div class="flex justify-between items-start mb-2">
-          <div><p class="font-extrabold text-slate-800 text-sm">${item.opnameid}</p><p class="text-[10px] text-slate-400 font-medium">${item.datetime}</p></div>
-          <span class="bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded">Stok: ${item.opnamestock} ${item.unit || ""}</span>
-        </div>
-        <div class="bg-slate-50 p-2 rounded-lg space-y-1 mb-2 text-slate-600">
-          <p><span class="font-semibold text-slate-400">Barang:</span> [${item.id}] ${item.name}</p>
-          <p><span class="font-semibold text-slate-400">Spesifikasi:</span> Size ${item.size || "-"} | Type ${item.type || "-"}</p>
-          <p><span class="font-semibold text-slate-400">Lokasi:</span> ${item.location || "-"}</p>
-          ${item.details ? `<p><span class="font-semibold text-slate-400">Detail:</span> ${item.details}</p>` : ""}
-        </div>
-        <div class="flex justify-end gap-2 pt-1 border-t border-slate-100">
-          <button onclick="openOpnameModal('update', '${item.opnameid}')" class="text-blue-600 bg-blue-50 px-2.5 py-1 rounded font-bold hover:bg-blue-100 transition"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-          <button onclick="deleteOpname('${item.opnameid}')" class="text-red-600 bg-red-50 px-2.5 py-1 rounded font-bold hover:bg-red-100 transition"><i class="fa-solid fa-trash"></i> Hapus</button>
-        </div>
-      </div>`;
+    <div class="border border-slate-200 rounded-xl p-3 shadow-sm bg-white hover:shadow-md transition text-xs">
+      <div class="flex justify-between items-start mb-2">
+        <div><p class="font-extrabold text-slate-800 text-sm">${item.opnameid}</p><p class="text-[10px] text-slate-400 font-medium">${item.datetime}</p></div>
+        <span class="bg-blue-50 text-blue-600 font-bold px-2 py-1 rounded">Stok: ${item.opnamestock} ${item.unit || ""}</span>
+      </div>
+      <div class="bg-slate-50 p-2 rounded-lg space-y-1 mb-2 text-slate-600">
+        <p><span class="font-semibold text-slate-400">Barang:</span> [${item.id}] ${item.name}</p>
+        <p><span class="font-semibold text-slate-400">Spesifikasi:</span> Size ${item.size || "-"} | Type ${item.type || "-"}</p>
+        <p><span class="font-semibold text-slate-400">Lokasi:</span> ${item.location || "-"}</p>
+        ${item.details ? `<p><span class="font-semibold text-slate-400">Detail:</span> ${item.details}</p>` : ""}
+      </div>
+      <div class="flex justify-end gap-2 pt-1 border-t border-slate-100">
+        <button onclick="openOpnameModal('update', '${item.opnameid}')" class="text-blue-600 bg-blue-50 px-2.5 py-1 rounded font-bold hover:bg-blue-100 transition"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+        <button onclick="deleteOpname('${item.opnameid}')" class="text-red-600 bg-red-50 px-2.5 py-1 rounded font-bold hover:bg-red-100 transition"><i class="fa-solid fa-trash"></i> Hapus</button>
+      </div>
+    </div>`;
         });
       }
 
@@ -1689,6 +1823,229 @@ document.getElementById("closeQrModal").addEventListener("click", () => {
           alert("Gagal koneksi ke server.");
         }
       }
+
+      function fetchUsers() {
+        fetch(API_URL + "?action=getUsers")
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") {
+              globalUsers = res.data;
+              renderUsers();
+            }
+          })
+          .catch((err) => console.error("Gagal load user:", err));
+      }
+
+      function renderUsers() {
+        const container = document.getElementById("userListContainer");
+        container.innerHTML = "";
+        if (globalUsers.length === 0) {
+          container.innerHTML = `<div class="text-center py-10 text-slate-400 text-xs">Belum ada data user.</div>`;
+          return;
+        }
+        globalUsers.forEach((user) => {
+          const div = document.createElement("div");
+          div.className =
+            "bg-white border border-slate-100 rounded-2xl p-4 flex flex-col gap-3 shadow-sm hover:shadow-md transition relative";
+          let badgeColor = "bg-blue-50 text-blue-600 border border-blue-100";
+          if (user.role === "Superadmin")
+            badgeColor =
+              "bg-purple-50 text-purple-600 border border-purple-100";
+          else if (user.role === "Admin")
+            badgeColor =
+              "bg-emerald-50 text-emerald-600 border border-emerald-100";
+          else if (user.role === "Head")
+            badgeColor = "bg-amber-50 text-amber-600 border border-amber-100";
+          div.innerHTML = `
+          <div class="flex justify-between items-start"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs shadow-inner">${user.nama.charAt(0).toUpperCase()}</div><div><h4 class="font-bold text-slate-800 text-xs leading-none mb-1">${user.nama}</h4><p class="text-[10px] text-slate-400">@${user.username}</p></div></div><span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${badgeColor}">${user.role}</span></div>
+          <hr class="border-slate-100" />
+          <div class="grid grid-cols-2 gap-y-2 gap-x-1 text-[11px] text-slate-500"><div><span class="block text-[8px] uppercase tracking-wider text-slate-400 font-bold">Section / Divisi</span><span class="font-semibold text-slate-700">${user.section || "-"}</span></div><div><span class="block text-[8px] uppercase tracking-wider text-slate-400 font-bold">No. Telegram</span><span class="font-semibold text-slate-700">${user.noTelegram || "-"}</span></div><div class="col-span-2"><span class="block text-[8px] uppercase tracking-wider text-slate-400 font-bold">Chat ID Telegram</span><span class="font-mono text-[10px] text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200/60 inline-block mt-0.5">${user.chatId || "-"}</span></div></div>
+          <div class="flex justify-end gap-2 pt-1 border-t border-slate-50"><button onclick="editUser('${user.timestamp}')" class="flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 transition"><i class="fa-solid fa-pen text-[9px]"></i> Edit</button><button onclick="deleteUser('${user.timestamp}')" class="flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"><i class="fa-solid fa-trash text-[9px]"></i> Hapus</button></div>
+        `;
+          container.appendChild(div);
+        });
+      }
+
+      function editUser(timestamp) {
+        const user = globalUsers.find((u) => u.timestamp === timestamp);
+        if (user) {
+          document.getElementById("userTimestamp").value = user.timestamp;
+          document.getElementById("userName").value = user.nama;
+          document.getElementById("userUsername").value = user.username;
+          document.getElementById("userPassword").value = user.password || "";
+          document.getElementById("userSection").value = user.section || "";
+          document.getElementById("userRole").value = user.role;
+          document.getElementById("userNoTelegram").value =
+            user.noTelegram || "";
+          document.getElementById("userChatId").value = user.chatId || "";
+          document.getElementById("userModalTitle").innerText = "Edit User";
+          toggleUserModal(true);
+        }
+      }
+
+      function handleUserSubmit(event) {
+        event.preventDefault();
+        const btn = document.getElementById("btnSubmitUser");
+        btn.innerHTML = `<i class=\"fa-solid fa-spinner fa-spin\"></i> Menyimpan...`;
+        btn.disabled = true;
+        const payload = {
+          action: "saveUser",
+          timestamp: document.getElementById("userTimestamp").value,
+          nama: document.getElementById("userName").value,
+          username: document.getElementById("userUsername").value,
+          password: document.getElementById("userPassword").value,
+          section: document.getElementById("userSection").value,
+          role: document.getElementById("userRole").value,
+          noTelegram: document.getElementById("userNoTelegram").value,
+          chatId: document.getElementById("userChatId").value,
+        };
+        fetch(API_URL, { method: "POST", body: JSON.stringify(payload) })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") {
+              toggleUserModal(false);
+              fetchUsers();
+            } else {
+              alert("Gagal: " + res.message);
+            }
+          })
+          .finally(() => {
+            btn.innerHTML = "Simpan Data User";
+            btn.disabled = false;
+          });
+      }
+
+      function deleteUser(timestamp) {
+        if (!confirm("Yakin ingin menghapus data user ini?")) return;
+        fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "deleteUser", timestamp: timestamp }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") fetchUsers();
+          });
+      }
+
+      document.getElementById("btnScanQR").addEventListener("click", () => {
+        document.getElementById("qrModal").classList.remove("hidden");
+        html5QrcodeScanner = new Html5QrcodeScanner(
+          "qr-reader",
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          false,
+        );
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+      });
+
+      function onScanSuccess(decodedText, decodedResult) {
+        html5QrcodeScanner.clear();
+        document.getElementById("qrModal").classList.add("hidden");
+        const inputElement = document.getElementById("opnameItemId");
+        inputElement.value = decodedText;
+        inputElement.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+
+      function onScanFailure(error) {}
+
+      document.getElementById("closeQrModal").addEventListener("click", () => {
+        document.getElementById("qrModal").classList.add("hidden");
+        if (html5QrcodeScanner) {
+          html5QrcodeScanner.clear();
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        checkLoginStatus();
+      });
+
+      function checkLoginStatus() {
+        const sessionUser = localStorage.getItem("currentUser");
+        const dashboard = document.getElementById("mainDashboard");
+        const login = document.getElementById("loginPage");
+
+        if (sessionUser) {
+          const user = JSON.parse(sessionUser);
+          dashboard.classList.remove("hidden");
+          dashboard.classList.add("flex");
+          login.classList.remove("flex");
+          login.classList.add("hidden");
+
+          document.getElementById("avatarLetter").innerText = user.nama
+            .charAt(0)
+            .toUpperCase();
+          document.getElementById("welcomeName").innerText =
+            `Halo, ${user.nama} 👋`;
+          document.getElementById("profileName").innerText = user.nama;
+          document.getElementById("profileRole").innerText =
+            `${user.role} | ${user.section || "General"}`;
+
+          fetchData();
+          fetchUsers();
+        } else {
+          dashboard.classList.remove("flex");
+          dashboard.classList.add("hidden");
+          login.classList.remove("hidden");
+          login.classList.add("flex");
+        }
+      }
+
+      function handleLogin(event) {
+        event.preventDefault();
+        const userInp = document.getElementById("loginUsername").value.trim();
+        const passInp = document.getElementById("loginPassword").value;
+        const btn = document.getElementById("btnLogin");
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memverifikasi...`;
+        btn.disabled = true;
+
+        fetch(API_URL + "?action=getUsers")
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.status === "success") {
+              const matchedUser = res.data.find(
+                (u) => u.username === userInp && u.password === passInp,
+              );
+              if (matchedUser) {
+                localStorage.setItem(
+                  "currentUser",
+                  JSON.stringify(matchedUser),
+                );
+                checkLoginStatus();
+              } else {
+                alert("Username atau Password salah!");
+              }
+            } else {
+              alert("Gagal terhubung ke database.");
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            alert("Terjadi kendala jaringan server.");
+          })
+          .finally(() => {
+            btn.innerHTML = "Masuk ke Sistem";
+            btn.disabled = false;
+          });
+      }
+
+      function handleLogout() {
+        if (confirm("Apakah Anda yakin ingin keluar?")) {
+          localStorage.removeItem("currentUser");
+          checkLoginStatus();
+        }
+      }
+
+      function toggleProfileDropdown(event) {
+        event.stopPropagation();
+        const menu = document.getElementById("profileDropdown");
+        menu.classList.toggle("hidden");
+      }
+
+      window.addEventListener("click", function () {
+        const menu = document.getElementById("profileDropdown");
+        if (menu && !menu.classList.contains("hidden")) {
+          menu.classList.add("hidden");
+        }
+      });
     </script>
   </body>
 </html>
