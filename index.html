@@ -48,6 +48,7 @@
   <body
     class="bg-slate-900 md:py-8 min-h-screen flex justify-center md:items-start relative text-slate-800"
   >
+    <!-- LOGIN PAGE -->
     <div
       id="loginPage"
       class="hidden fixed inset-0 z-[200] bg-gradient-to-tr from-blue-700 to-indigo-900 flex-col items-center justify-center p-4"
@@ -121,6 +122,7 @@
       </div>
     </div>
 
+    <!-- TOAST NOTIFICATION -->
     <div
       id="toastNotif"
       class="fixed top-8 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none z-[100] translate-y-[-20px] border border-slate-600"
@@ -135,12 +137,14 @@
       >
     </div>
 
+    <!-- MAIN DASHBOARD -->
     <div
       id="mainDashboard"
       class="hidden w-full max-w-md bg-slate-50 min-h-screen md:min-h-[850px] md:rounded-[2.5rem] shadow-2xl relative flex-col pb-24 overflow-x-hidden md:border-8 md:border-slate-800 md:my-auto"
     >
+      <!-- HEADER GRADIENT -->
       <div
-        class="bg-gradient-to-r from-blue-600 to-blue-800 pt-6 pb-28 px-5 md:rounded-t-3xl rounded-b-[2rem] shadow-lg shadow-blue-600/10 relative shrink-0"
+        class="bg-gradient-to-r from-blue-600 to-blue-800 pt-6 pb-24 px-5 md:rounded-t-3xl rounded-b-[2rem] shadow-lg shadow-blue-600/10 relative shrink-0"
       >
         <div class="flex justify-between items-center relative z-10">
           <div class="flex items-center gap-3">
@@ -149,9 +153,8 @@
                 onclick="toggleProfileDropdown(event)"
                 class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex justify-center items-center border border-white/30 text-white font-bold text-lg hover:bg-white/30 transition focus:outline-none z-50"
               >
-                <span id="avatarLetter">R</span>
+                <span id="avatarLetter">U</span>
               </button>
-
               <div
                 id="profileDropdown"
                 class="hidden absolute left-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[200] animate-slide-up"
@@ -195,9 +198,37 @@
             <i id="refreshIcon" class="fa-solid fa-rotate text-base"></i>
           </button>
         </div>
+
+        <div
+          class="flex justify-between items-end relative z-10 text-white mt-6"
+        >
+          <div>
+            <p
+              class="text-[9px] text-blue-200/80 font-semibold tracking-wider uppercase"
+            >
+              System Hub
+            </p>
+            <h1 class="text-base font-bold tracking-wide">
+              Warehouse Management System
+            </h1>
+          </div>
+          <div class="text-right">
+            <p
+              id="real-time-clock"
+              class="text-xl font-extrabold tracking-wider leading-none"
+            >
+              00:00
+            </p>
+            <p class="text-[9px] text-blue-200/80 font-bold uppercase mt-1">
+              WIB
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div class="flex-1 px-5 -mt-14 relative z-0 space-y-4">
+      <!-- MAIN CONTENT CONTAINER -->
+      <div class="flex-1 px-5 -mt-10 relative z-10 space-y-4">
+        <!-- VIEW HOME -->
         <div id="viewHome" class="block relative z-10">
           <div class="grid grid-cols-2 gap-3">
             <div
@@ -218,6 +249,7 @@
                 <i class="fa-solid fa-box-open"></i>
               </div>
             </div>
+
             <div
               class="bg-white border border-slate-100 rounded-2xl p-4 shadow-md flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-lg"
             >
@@ -236,6 +268,7 @@
                 <i class="fa-solid fa-triangle-exclamation"></i>
               </div>
             </div>
+
             <div
               class="bg-white border border-slate-100 rounded-2xl p-4 shadow-md flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-lg"
             >
@@ -254,6 +287,7 @@
                 <i class="fa-solid fa-file-invoice"></i>
               </div>
             </div>
+
             <div
               class="bg-white border border-slate-100 rounded-2xl p-4 shadow-md flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-lg"
             >
@@ -275,6 +309,7 @@
           </div>
         </div>
 
+        <!-- VIEW BARANG -->
         <div id="viewBarang" class="hidden relative z-10">
           <div
             class="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden flex flex-col h-[580px]"
@@ -372,6 +407,7 @@
           </div>
         </div>
 
+        <!-- VIEW RIWAYAT -->
         <div id="viewRiwayat" class="hidden relative z-10">
           <div
             class="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden flex flex-col h-[580px]"
@@ -438,6 +474,7 @@
           </div>
         </div>
 
+        <!-- VIEW OPNAME -->
         <div id="viewOpname" class="hidden relative z-10">
           <div
             class="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden flex flex-col h-[580px]"
@@ -484,6 +521,7 @@
           </div>
         </div>
 
+        <!-- VIEW USERS -->
         <div id="viewUsers" class="hidden relative z-10">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-bold text-slate-800">Manajemen User</h2>
@@ -502,7 +540,9 @@
         </div>
       </div>
 
+      <!-- BOTTOM NAVIGATION BAR -->
       <div
+        id="bottomNavBar"
         class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-100 px-2 py-2 flex justify-between items-center z-40 shadow-[0_-10px_24px_rgba(0,0,0,0.06)] md:rounded-b-3xl"
       >
         <button
@@ -540,6 +580,7 @@
         </div>
 
         <button
+          id="navVerifikasi"
           onclick="toggleVerifikasiModal(true)"
           class="flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition relative font-medium"
         >
@@ -569,6 +610,7 @@
       </div>
     </div>
 
+    <!-- MODAL FORM TRANSAKSI -->
     <div
       id="inputModal"
       class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-end md:items-center p-0 md:p-4"
@@ -721,6 +763,7 @@
       </div>
     </div>
 
+    <!-- MODAL VERIFIKASI -->
     <div
       id="verifikasiModal"
       class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-end md:items-center p-0 md:p-4"
@@ -759,6 +802,7 @@
       </div>
     </div>
 
+    <!-- MODAL USER -->
     <div
       id="userModal"
       class="hidden fixed inset-0 z-[100] bg-black/80 flex justify-center items-end sm:items-center p-0 md:p-4"
@@ -881,6 +925,7 @@
       </div>
     </div>
 
+    <!-- MODAL OPNAME -->
     <div
       id="opnameModal"
       class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex justify-center items-end md:items-center p-0 md:p-4"
@@ -1049,6 +1094,7 @@
       </div>
     </div>
 
+    <!-- MODAL SCANNER QR -->
     <div
       id="qrModal"
       class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
@@ -1083,10 +1129,24 @@
       let globalOpnameData = [];
       let opnameCurrentMode = "create";
       let globalUsers = [];
-      let html5QrcodeScanner;
+      let html5QrcodeScanner = null;
 
-      // EVENT LISTENER AUTO-FILL OPNAME SAAT KETIK ID BARANG
+      function initClock() {
+        setInterval(() => {
+          const clockEl = document.getElementById("real-time-clock");
+          if (clockEl) {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            clockEl.innerText = `${hours}:${minutes}`;
+          }
+        }, 1000);
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
+        initClock();
+        checkLoginStatus();
+
         document
           .getElementById("opnameItemId")
           .addEventListener("input", function (e) {
@@ -1098,41 +1158,18 @@
 
             if (barang) {
               document.getElementById("opnameItemName").value =
-                barang.name || barang.Name || barang.nama || barang.Nama || "";
+                barang.name || barang.nama || "";
               document.getElementById("opnameSize").value =
-                barang.size ||
-                barang.Size ||
-                barang.ukuran ||
-                barang.Ukuran ||
-                "";
+                barang.size || barang.ukuran || "";
               document.getElementById("opnameType").value =
-                barang.type ||
-                barang.Type ||
-                barang.category ||
-                barang.Category ||
-                barang.tipe ||
-                "";
+                barang.type || barang.category || "";
               document.getElementById("opnameSerial").value =
-                barang.serialNo ||
-                barang.serialno ||
-                barang.SerialNo ||
-                barang["Serial No"] ||
-                barang["Serial No."] ||
-                "";
+                barang.serialNo || barang["Serial No"] || "";
               document.getElementById("opnameBrand").value =
-                barang.brand ||
-                barang.Brand ||
-                barang.merk ||
-                barang.Merk ||
-                "";
+                barang.brand || barang.merk || "";
 
               let exp =
-                barang.expDate ||
-                barang.expdate ||
-                barang.ExpDate ||
-                barang["Exp Date"] ||
-                barang.expired ||
-                "";
+                barang.expDate || barang.expdate || barang["Exp Date"] || "";
               if (exp && exp !== "-") {
                 try {
                   const d = new Date(exp);
@@ -1147,17 +1184,9 @@
               }
 
               document.getElementById("opnameUnit").value =
-                barang.unit ||
-                barang.Unit ||
-                barang.satuan ||
-                barang.Satuan ||
-                "";
+                barang.unit || barang.satuan || "";
               document.getElementById("opnameLocation").value =
-                barang.location ||
-                barang.Location ||
-                barang.lokasi ||
-                barang.Lokasi ||
-                "";
+                barang.location || barang.lokasi || "";
 
               e.target.classList.replace(
                 "border-slate-200",
@@ -1185,7 +1214,6 @@
           });
       });
 
-      // Pindah Halaman Menu (Switch View)
       function switchView(viewName) {
         toggleVerifikasiModal(false);
         toggleModal(false);
@@ -1327,16 +1355,19 @@
         dataListBarang.forEach((item) => {
           const tr = document.createElement("tr");
           tr.className = "bg-white border-b hover:bg-slate-50 transition";
+          let stockVal = item.stock || 0;
+          let minStockVal = item.minStock || 0;
           let statusColor =
-            item.stock <= item.minStock
+            stockVal <= minStockVal
               ? "bg-red-100 text-red-600"
               : "bg-emerald-100 text-emerald-600";
           let statusText =
             item.status && item.status.trim() !== ""
               ? item.status
-              : item.stock <= item.minStock
+              : stockVal <= minStockVal
                 ? "Restock"
                 : "Aman";
+
           tr.innerHTML = `
           <td class="px-4 py-3 font-medium text-slate-900">${item.id}</td>
           <td class="px-4 py-3 text-slate-600">${item.category || "-"}</td>
@@ -1346,8 +1377,8 @@
           <td class="px-4 py-3 text-center text-slate-600">${item.stockIn || 0}</td>
           <td class="px-4 py-3 text-center text-slate-600">${item.stockOut || 0}</td>
           <td class="px-4 py-3 text-center text-slate-600">${item.stockUsed || 0}</td>
-          <td class="px-4 py-3 text-center font-bold text-slate-800 bg-blue-50/40">${item.stock || 0}</td>
-          <td class="px-4 py-3 text-center text-slate-400">${item.minStock || 0}</td>
+          <td class="px-4 py-3 text-center font-bold text-slate-800 bg-blue-50/40">${stockVal}</td>
+          <td class="px-4 py-3 text-center text-slate-400">${minStockVal}</td>
           <td class="px-4 py-3 text-center"><span class="px-2.5 py-1 text-[10px] font-bold tracking-wider rounded-md ${statusColor}">${statusText.toUpperCase()}</span></td>
         `;
           tbody.appendChild(tr);
@@ -1420,7 +1451,8 @@
             ? "bg-emerald-100 text-emerald-700"
             : "bg-rose-100 text-rose-700";
           let icon = isMasuk ? "fa-arrow-down" : "fa-arrow-up";
-          let statColor = trx.status.toLowerCase().includes("pending")
+          let statusText = trx.status || "Pending";
+          let statColor = statusText.toLowerCase().includes("pending")
             ? "text-amber-500"
             : "text-slate-700";
 
@@ -1435,7 +1467,7 @@
             </div>
             <div class="text-xs bg-slate-50/50 p-2.5 rounded-lg border border-slate-100 mt-2">
                <p><span class="font-semibold text-slate-400">Pemohon:</span> <span class="font-medium text-slate-700">${trx.applicant || "-"}</span></p>
-               <p><span class="font-semibold text-slate-400">Status:</span> <span class="font-bold ${statColor}">${trx.status || "-"}</span></p>
+               <p><span class="font-semibold text-slate-400">Status:</span> <span class="font-bold ${statColor}">${statusText}</span></p>
             </div>
           </div>
         `;
@@ -1470,8 +1502,10 @@
       async function approveTransaksi(trxId) {
         if (!confirm(`Yakin ingin menyetujui transaksi ${trxId}?`)) return;
         const card = document.getElementById(`trx-${trxId}`);
-        card.style.opacity = "0.5";
-        card.style.pointerEvents = "none";
+        if (card) {
+          card.style.opacity = "0.5";
+          card.style.pointerEvents = "none";
+        }
         try {
           const response = await fetch(API_URL, {
             method: "POST",
@@ -1489,13 +1523,17 @@
             fetchRiwayatData();
           } else {
             alert("Gagal Approve: " + res.message);
-            card.style.opacity = "1";
-            card.style.pointerEvents = "auto";
+            if (card) {
+              card.style.opacity = "1";
+              card.style.pointerEvents = "auto";
+            }
           }
         } catch (err) {
           alert("Gagal terhubung ke server.");
-          card.style.opacity = "1";
-          card.style.pointerEvents = "auto";
+          if (card) {
+            card.style.opacity = "1";
+            card.style.pointerEvents = "auto";
+          }
         }
       }
 
@@ -1543,6 +1581,7 @@
         else cart.push({ id: item.id, name: item.name, qty: 1 });
         renderCart();
       }
+
       function renderCart() {
         const container = document.getElementById("cartContainer");
         container.innerHTML = "";
@@ -1550,6 +1589,7 @@
           container.innerHTML += `<div class="bg-blue-50/50 border border-blue-100 rounded-xl p-3 flex justify-between items-center"><div class="pr-6"><p class="text-xs font-bold text-slate-800">${item.name}</p><p class="text-[10px] text-slate-500">ID: ${item.id}</p></div><div class="flex gap-2 items-center"><span class="text-[10px] font-semibold text-slate-500">Qty:</span><input type="number" min="1" value="${item.qty}" onchange="cart[${index}].qty=Number(this.value)" class="w-14 bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs text-center border-b-2 border-blue-400 focus:outline-none"><button type="button" onclick="cart.splice(${index},1); renderCart()" class="text-red-400 hover:text-red-600 ml-2"><i class="fa-solid fa-trash-can text-sm"></i></button></div></div>`;
         });
       }
+
       function getBase64(file) {
         return new Promise((res, rej) => {
           const reader = new FileReader();
@@ -1611,7 +1651,7 @@
 
       async function fetchData() {
         const icon = document.getElementById("refreshIcon");
-        icon.classList.add("fa-spin");
+        if (icon) icon.classList.add("fa-spin");
         try {
           const response = await fetch(
             API_URL + "?action=getDashboardAndPending",
@@ -1655,7 +1695,7 @@
         } catch (err) {
           console.error("Error fetchData:", err);
         } finally {
-          icon.classList.remove("fa-spin");
+          if (icon) icon.classList.remove("fa-spin");
         }
       }
 
@@ -1733,7 +1773,6 @@
         renderOpnameList(filtered);
       }
 
-      // Membuka modal opname
       function openOpnameModal(mode, id = "") {
         opnameCurrentMode = mode;
         toggleOpnameModal(true);
@@ -1748,16 +1787,9 @@
           if (target) {
             document.getElementById("opnameFormId").value = target.opnameid;
             document.getElementById("opnameItemId").value = target.id;
-            document.getElementById("opnameItemName").value = target.name;
-            document.getElementById("opnameSize").value = target.size;
-            document.getElementById("opnameType").value = target.type;
-            document.getElementById("opnameSerial").value = target.serialno;
-            document.getElementById("opnameBrand").value = target.brand;
-            document.getElementById("opnameExpDate").value = target.expdate
-              ? target.expdate.split("T")[0]
-              : "";
-            document.getElementById("opnameUnit").value = target.unit;
-            document.getElementById("opnameLocation").value = target.location;
+            document
+              .getElementById("opnameItemId")
+              .dispatchEvent(new Event("input"));
             document.getElementById("opnameStock").value = target.opnamestock;
             document.getElementById("opnameDetails").value = target.details;
           }
@@ -1862,8 +1894,9 @@
               "bg-emerald-50 text-emerald-600 border border-emerald-100";
           else if (user.role === "Head")
             badgeColor = "bg-amber-50 text-amber-600 border border-amber-100";
+
           div.innerHTML = `
-          <div class="flex justify-between items-start"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs shadow-inner">${user.nama.charAt(0).toUpperCase()}</div><div><h4 class="font-bold text-slate-800 text-xs leading-none mb-1">${user.nama}</h4><p class="text-[10px] text-slate-400">@${user.username}</p></div></div><span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${badgeColor}">${user.role}</span></div>
+          <div class="flex justify-between items-start"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-600 font-bold text-xs shadow-inner">${(user.nama || "U").charAt(0).toUpperCase()}</div><div><h4 class="font-bold text-slate-800 text-xs leading-none mb-1">${user.nama}</h4><p class="text-[10px] text-slate-400">@${user.username}</p></div></div><span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${badgeColor}">${user.role}</span></div>
           <hr class="border-slate-100" />
           <div class="grid grid-cols-2 gap-y-2 gap-x-1 text-[11px] text-slate-500"><div><span class="block text-[8px] uppercase tracking-wider text-slate-400 font-bold">Section / Divisi</span><span class="font-semibold text-slate-700">${user.section || "-"}</span></div><div><span class="block text-[8px] uppercase tracking-wider text-slate-400 font-bold">No. Telegram</span><span class="font-semibold text-slate-700">${user.noTelegram || "-"}</span></div><div class="col-span-2"><span class="block text-[8px] uppercase tracking-wider text-slate-400 font-bold">Chat ID Telegram</span><span class="font-mono text-[10px] text-slate-600 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200/60 inline-block mt-0.5">${user.chatId || "-"}</span></div></div>
           <div class="flex justify-end gap-2 pt-1 border-t border-slate-50"><button onclick="editUser('${user.timestamp}')" class="flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-orange-50 text-orange-600 hover:bg-orange-100 transition"><i class="fa-solid fa-pen text-[9px]"></i> Edit</button><button onclick="deleteUser('${user.timestamp}')" class="flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"><i class="fa-solid fa-trash text-[9px]"></i> Hapus</button></div>
@@ -1873,7 +1906,9 @@
       }
 
       function editUser(timestamp) {
-        const user = globalUsers.find((u) => u.timestamp === timestamp);
+        const user = globalUsers.find(
+          (u) => String(u.timestamp) === String(timestamp),
+        );
         if (user) {
           document.getElementById("userTimestamp").value = user.timestamp;
           document.getElementById("userName").value = user.nama;
@@ -1892,7 +1927,7 @@
       function handleUserSubmit(event) {
         event.preventDefault();
         const btn = document.getElementById("btnSubmitUser");
-        btn.innerHTML = `<i class=\"fa-solid fa-spinner fa-spin\"></i> Menyimpan...`;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...`;
         btn.disabled = true;
         const payload = {
           action: "saveUser",
@@ -1935,20 +1970,28 @@
 
       document.getElementById("btnScanQR").addEventListener("click", () => {
         document.getElementById("qrModal").classList.remove("hidden");
-        html5QrcodeScanner = new Html5QrcodeScanner(
-          "qr-reader",
-          { fps: 10, qrbox: { width: 250, height: 250 } },
-          false,
-        );
+        if (!html5QrcodeScanner) {
+          html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader",
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            false,
+          );
+        }
         html5QrcodeScanner.render(onScanSuccess, onScanFailure);
       });
 
       function onScanSuccess(decodedText, decodedResult) {
-        html5QrcodeScanner.clear();
-        document.getElementById("qrModal").classList.add("hidden");
-        const inputElement = document.getElementById("opnameItemId");
-        inputElement.value = decodedText;
-        inputElement.dispatchEvent(new Event("input", { bubbles: true }));
+        if (html5QrcodeScanner) {
+          html5QrcodeScanner
+            .clear()
+            .then(() => {
+              document.getElementById("qrModal").classList.add("hidden");
+              const inputElement = document.getElementById("opnameItemId");
+              inputElement.value = decodedText;
+              inputElement.dispatchEvent(new Event("input", { bubbles: true }));
+            })
+            .catch((err) => console.error(err));
+        }
       }
 
       function onScanFailure(error) {}
@@ -1956,12 +1999,8 @@
       document.getElementById("closeQrModal").addEventListener("click", () => {
         document.getElementById("qrModal").classList.add("hidden");
         if (html5QrcodeScanner) {
-          html5QrcodeScanner.clear();
+          html5QrcodeScanner.clear().catch((err) => console.error(err));
         }
-      });
-
-      document.addEventListener("DOMContentLoaded", function () {
-        checkLoginStatus();
       });
 
       function checkLoginStatus() {
@@ -1976,7 +2015,7 @@
           login.classList.remove("flex");
           login.classList.add("hidden");
 
-          document.getElementById("avatarLetter").innerText = user.nama
+          document.getElementById("avatarLetter").innerText = (user.nama || "U")
             .charAt(0)
             .toUpperCase();
           document.getElementById("welcomeName").innerText =
@@ -1985,8 +2024,25 @@
           document.getElementById("profileRole").innerText =
             `${user.role} | ${user.section || "General"}`;
 
+          // RBAC: Sembunyikan Navigasi Tergantung Role Pengguna
+          const navUsersEl = document.getElementById("navUsers");
+          const navVerifikasiEl = document.getElementById("navVerifikasi");
+
+          if (user.role === "Karyawan") {
+            if (navUsersEl) navUsersEl.classList.add("hidden");
+            if (navVerifikasiEl) navVerifikasiEl.classList.add("hidden");
+          } else if (user.role === "Head") {
+            if (navUsersEl) navUsersEl.classList.add("hidden");
+            if (navVerifikasiEl) navVerifikasiEl.classList.remove("hidden");
+          } else {
+            if (navUsersEl) navUsersEl.classList.remove("hidden");
+            if (navVerifikasiEl) navVerifikasiEl.classList.remove("hidden");
+          }
+
           fetchData();
-          fetchUsers();
+          if (user.role === "Superadmin" || user.role === "Admin") {
+            fetchUsers();
+          }
         } else {
           dashboard.classList.remove("flex");
           dashboard.classList.add("hidden");
@@ -2036,6 +2092,7 @@
       function handleLogout() {
         if (confirm("Apakah Anda yakin ingin keluar?")) {
           localStorage.removeItem("currentUser");
+          switchView("home");
           checkLoginStatus();
         }
       }
