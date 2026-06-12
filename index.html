@@ -140,7 +140,7 @@
       class="hidden w-full max-w-md bg-slate-50 min-h-screen md:min-h-[850px] md:rounded-[2.5rem] shadow-2xl relative flex-col pb-24 overflow-x-hidden md:border-8 md:border-slate-800 md:my-auto"
     >
       <div
-        class="bg-gradient-to-r from-blue-600 to-blue-800 pt-6 pb-12 px-5 md:rounded-t-3xl rounded-b-[2rem] shadow-lg shadow-blue-600/10 relative overflow-hidden"
+        class="bg-gradient-to-r from-blue-600 to-blue-800 pt-6 pb-28 px-5 md:rounded-t-3xl rounded-b-[2rem] shadow-lg shadow-blue-600/10 relative shrink-0"
       >
         <div class="flex justify-between items-center relative z-10">
           <div class="flex items-center gap-3">
@@ -151,6 +151,7 @@
               >
                 <span id="avatarLetter">R</span>
               </button>
+
               <div
                 id="profileDropdown"
                 class="hidden absolute left-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-[200] animate-slide-up"
@@ -194,11 +195,13 @@
             <i id="refreshIcon" class="fa-solid fa-rotate text-base"></i>
           </button>
         </div>
+      </div>
 
-        <div id="viewHome" class="block px-5 mt-4 flex-1 relative z-10">
+      <div class="flex-1 px-5 -mt-14 relative z-0 space-y-4">
+        <div id="viewHome" class="block relative z-10">
           <div class="grid grid-cols-2 gap-3">
             <div
-              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-md flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-lg"
             >
               <p class="text-xs text-slate-500 font-semibold relative z-10">
                 Total Barang
@@ -216,7 +219,7 @@
               </div>
             </div>
             <div
-              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-md flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-lg"
             >
               <p class="text-xs text-slate-500 font-semibold relative z-10">
                 Stok Rendah
@@ -234,7 +237,7 @@
               </div>
             </div>
             <div
-              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-md flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-lg"
             >
               <p class="text-xs text-slate-500 font-semibold relative z-10">
                 Trans. Hari Ini
@@ -252,7 +255,7 @@
               </div>
             </div>
             <div
-              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-md"
+              class="bg-white border border-slate-100 rounded-2xl p-4 shadow-md flex flex-col justify-between h-28 relative overflow-hidden transition hover:shadow-lg"
             >
               <p class="text-xs text-slate-500 font-semibold relative z-10">
                 Trans. Bulan Ini
@@ -272,9 +275,9 @@
           </div>
         </div>
 
-        <div id="viewBarang" class="hidden px-5 mt-4 flex-1 relative z-10">
+        <div id="viewBarang" class="hidden relative z-10">
           <div
-            class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
+            class="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden flex flex-col h-[580px]"
           >
             <div
               class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
@@ -369,9 +372,9 @@
           </div>
         </div>
 
-        <div id="viewRiwayat" class="hidden px-5 mt-4 flex-1 relative z-10">
+        <div id="viewRiwayat" class="hidden relative z-10">
           <div
-            class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
+            class="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden flex flex-col h-[580px]"
           >
             <div
               class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
@@ -435,9 +438,9 @@
           </div>
         </div>
 
-        <div id="viewOpname" class="hidden px-5 mt-4 flex-1 relative z-10">
+        <div id="viewOpname" class="hidden relative z-10">
           <div
-            class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[600px]"
+            class="bg-white border border-slate-100 rounded-2xl shadow-md overflow-hidden flex flex-col h-[580px]"
           >
             <div
               class="p-4 border-b border-slate-100 flex justify-between items-center bg-white"
@@ -481,23 +484,24 @@
           </div>
         </div>
 
-        <div id="viewUsers" class="hidden px-5 mt-4 flex-1 relative z-10">
+        <div id="viewUsers" class="hidden relative z-10">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-white">Manajemen User</h2>
+            <h2 class="text-xl font-bold text-slate-800">Manajemen User</h2>
             <button
               onclick="toggleUserModal(true)"
-              class="bg-white text-blue-600 px-3 py-2 rounded-xl text-xs font-bold shadow-sm hover:bg-blue-50 transition"
+              class="bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-md hover:bg-blue-700 transition"
             >
               <i class="fa-solid fa-plus mr-1"></i> Tambah
             </button>
           </div>
           <div id="userListContainer" class="space-y-3 pb-8">
-            <div class="text-center py-10 text-white text-xs">
+            <div class="text-center py-10 text-slate-400 text-xs">
               <i class="fa-solid fa-spinner fa-spin"></i> Memuat data...
             </div>
           </div>
         </div>
       </div>
+
       <div
         class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-100 px-2 py-2 flex justify-between items-center z-40 shadow-[0_-10px_24px_rgba(0,0,0,0.06)] md:rounded-b-3xl"
       >
@@ -564,6 +568,7 @@
         </button>
       </div>
     </div>
+
     <div
       id="inputModal"
       class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-end md:items-center p-0 md:p-4"
@@ -1728,6 +1733,7 @@
         renderOpnameList(filtered);
       }
 
+      // Membuka modal opname
       function openOpnameModal(mode, id = "") {
         opnameCurrentMode = mode;
         toggleOpnameModal(true);
