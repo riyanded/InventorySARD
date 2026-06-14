@@ -146,7 +146,7 @@
       <div
         class="bg-gradient-to-r from-blue-600 to-blue-800 pt-6 pb-24 px-5 md:rounded-t-3xl rounded-b-[2rem] shadow-lg shadow-blue-600/10 relative shrink-0"
       >
-        <div class="flex justify-between items-center relative z-10">
+        <div class="flex justify-between items-center relative z-50">
           <div class="flex items-center gap-3">
             <div class="relative">
               <button
@@ -1118,6 +1118,42 @@
       </div>
     </div>
 
+    <!-- MODAL KONFIRMASI LOGOUT -->
+    <div
+      id="logoutModal"
+      class="hidden fixed inset-0 z-[300] bg-black/50 backdrop-blur-sm flex justify-center items-center p-4"
+    >
+      <div
+        class="bg-white rounded-3xl w-full max-w-xs p-6 shadow-2xl animate-slide-up text-center"
+      >
+        <div
+          class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm"
+        >
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+        <h3 class="text-base font-bold text-slate-800 mb-2">
+          Konfirmasi Keluar
+        </h3>
+        <p class="text-xs text-slate-500 mb-6">
+          Apakah Anda yakin ingin mengakhiri sesi dan keluar dari sistem?
+        </p>
+        <div class="flex gap-3">
+          <button
+            onclick="toggleLogoutModal(false)"
+            class="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl hover:bg-slate-200 transition text-xs"
+          >
+            Batal
+          </button>
+          <button
+            onclick="executeLogout()"
+            class="flex-1 bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 shadow-lg shadow-red-600/20 transition text-xs"
+          >
+            Ya, Keluar
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       const API_URL =
         "https://script.google.com/macros/s/AKfycby-JDXyEsWiV2A5lK8MGq5aX6ZpvBpsXikM75cXs4bdGJNpHq-iGke0j8ct__s8gpjH/exec";
@@ -1219,6 +1255,7 @@
         toggleModal(false);
         toggleOpnameModal(false);
 
+        // 1. Sembunyikan/Tampilkan Konten Halaman
         document
           .getElementById("viewHome")
           .classList.toggle("hidden", viewName !== "home");
@@ -1235,20 +1272,24 @@
           .getElementById("viewUsers")
           .classList.toggle("hidden", viewName !== "users");
 
+        // 2. Warnai Tombol Navigasi Bawah (Tanpa Menghapus class "hidden")
         const menus = ["Home", "Barang", "Opname", "Riwayat", "Users"];
         menus.forEach((menu) => {
           const el = document.getElementById("nav" + menu);
           if (el) {
             if (viewName === menu.toLowerCase()) {
-              el.className =
-                "flex flex-col items-center gap-1 flex-1 text-blue-600 transition font-bold";
+              // Jika aktif: jadikan biru dan tebal
+              el.classList.add("text-blue-600", "font-bold");
+              el.classList.remove("text-slate-400", "font-medium");
             } else {
-              el.className =
-                "flex flex-col items-center gap-1 flex-1 text-slate-400 hover:text-blue-600 transition font-medium";
+              // Jika tidak aktif: jadikan abu-abu dan normal
+              el.classList.add("text-slate-400", "font-medium");
+              el.classList.remove("text-blue-600", "font-bold");
             }
           }
         });
 
+        // 3. Tarik Data jika Halaman Dibuka
         if (viewName === "riwayat" && globalRiwayatData.length === 0)
           fetchRiwayatData();
         if (viewName === "opname") fetchOpnameData();
@@ -2027,16 +2068,17 @@
           // RBAC: Sembunyikan Navigasi Tergantung Role Pengguna
           const navUsersEl = document.getElementById("navUsers");
           const navVerifikasiEl = document.getElementById("navVerifikasi");
+          const navOpnameEl = document.getElementById("navOpname"); // Baris baru: Ambil elemen menu opname
 
           if (user.role === "Karyawan") {
             if (navUsersEl) navUsersEl.classList.add("hidden");
-            if (navVerifikasiEl) navVerifikasiEl.classList.add("hidden");
+            if (navOpnameEl) navOpnameEl.classList.add("hidden"); // Baris baru: Sembunyikan jika Karyawan
           } else if (user.role === "Head") {
             if (navUsersEl) navUsersEl.classList.add("hidden");
-            if (navVerifikasiEl) navVerifikasiEl.classList.remove("hidden");
+            if (navOpnameEl) navOpnameEl.classList.remove("hidden"); // Baris baru: Tampilkan jika Head
           } else {
             if (navUsersEl) navUsersEl.classList.remove("hidden");
-            if (navVerifikasiEl) navVerifikasiEl.classList.remove("hidden");
+            if (navOpnameEl) navOpnameEl.classList.remove("hidden"); // Baris baru: Tampilkan jika Admin/Superadmin
           }
 
           fetchData();
@@ -2089,12 +2131,9 @@
           });
       }
 
+      // Ubah handleLogout untuk memanggil modal custom, bukan alert browser
       function handleLogout() {
-        if (confirm("Apakah Anda yakin ingin keluar?")) {
-          localStorage.removeItem("currentUser");
-          switchView("home");
-          checkLoginStatus();
-        }
+        toggleLogoutModal(true);
       }
 
       function toggleProfileDropdown(event) {
@@ -2109,6 +2148,27 @@
           menu.classList.add("hidden");
         }
       });
+
+      // Fungsi untuk memunculkan/menyembunyikan modal
+      function toggleLogoutModal(show) {
+        const modal = document.getElementById("logoutModal");
+        if (show) {
+          modal.classList.remove("hidden");
+          // Sembunyikan dropdown profil saat modal muncul
+          const menu = document.getElementById("profileDropdown");
+          if (menu) menu.classList.add("hidden");
+        } else {
+          modal.classList.add("hidden");
+        }
+      }
+
+      // Fungsi eksekusi logout yang dipanggil saat tombol "Ya, Keluar" diklik
+      function executeLogout() {
+        toggleLogoutModal(false);
+        localStorage.removeItem("currentUser");
+        switchView("home");
+        checkLoginStatus();
+      }
     </script>
   </body>
 </html>
