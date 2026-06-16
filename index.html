@@ -204,9 +204,9 @@
         >
           <div>
             <p
-              class="text-[9px] text-blue-200/80 font-semibold tracking-wider uppercase"
+              class="text-[12px] text-blue-200/80 font-semibold tracking-wider uppercase"
             >
-              System Hub
+              SARD
             </p>
             <h1 class="text-base font-bold tracking-wide">
               Warehouse Management System
@@ -1165,7 +1165,7 @@
 
     <script>
       const API_URL =
-        "https://script.google.com/macros/s/AKfycbwo0G-8Z77Svzmau-Lu-b8e7ttBEwVKqRVdEDIRMiYenq4-yqihlpuJ-MB9PGE2KcYk/exec";
+        "https://script.google.com/macros/s/AKfycbyj-3TCGyc3xaGgsrCT8_ml-cevAwp7j2LhR8-Euc0Kf3B3GCMfUrrCL1wVqZSWCQ6L/exec";
 
       let globalBarangData = [];
       let globalPendingData = [];
@@ -1438,31 +1438,62 @@
       function renderPendingList() {
         const container = document.getElementById("pendingListContainer");
         const badge = document.getElementById("badgePendingNotif");
-        if (globalPendingData.length === 0) {
+
+        if (!globalPendingData || globalPendingData.length === 0) {
           container.innerHTML = `<div class="flex flex-col items-center justify-center py-10 text-slate-400"><i class="fa-solid fa-clipboard-check text-4xl mb-3 text-slate-200"></i><p class="text-xs font-medium">Yeay! Tidak ada transaksi yang perlu diverifikasi.</p></div>`;
           badge.classList.add("hidden");
           return;
         }
+
         badge.classList.remove("hidden");
         container.innerHTML = "";
+
         globalPendingData.forEach((trx) => {
           let isMasuk = trx.category === "MASUK";
           let catColor = isMasuk
             ? "bg-emerald-100 text-emerald-700"
             : "bg-rose-100 text-rose-700";
+
+          let statOff = trx.statusOfficer || "Pending";
+          let statSpv = trx.statusSPV || "Pending";
+
+          let iconOff =
+            statOff === "Approved"
+              ? '<i class="fa-solid fa-circle-check"></i>'
+              : '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+          let iconSpv =
+            statSpv === "Approved"
+              ? '<i class="fa-solid fa-circle-check"></i>'
+              : '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+          // Tombol persetujuan dan pengecekan role web telah dihapus sepenuhnya di sini
+
           container.innerHTML += `
            <div id="trx-${trx.id}" class="border border-slate-200 rounded-xl p-4 shadow-sm bg-slate-50/50 relative overflow-hidden">
               <div class="flex justify-between items-start mb-3">
-                 <div><span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${catColor}">${trx.category}</span><p class="text-xs font-bold text-slate-800 mt-1">${trx.id} <span class="text-slate-400 font-normal">| ${trx.date || "-"}</span></p></div>
-                 <span class="text-[10px] font-bold px-2 py-1 rounded bg-amber-100 text-amber-600 border border-amber-200 animate-pulse">Pending</span>
+                 <div>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${catColor}">${trx.category}</span>
+                    <p class="text-xs font-bold text-slate-800 mt-1">${trx.id} <span class="text-slate-400 font-normal">| ${trx.date || "-"}</span></p>
+                 </div>
+                 <span class="text-[10px] font-bold px-2 py-1 rounded bg-amber-100 text-amber-600 border border-amber-200 animate-pulse">Menunggu Validasi</span>
               </div>
-              <div class="text-xs text-slate-600 mb-3 space-y-1">
+              
+              <div class="text-xs text-slate-600 mb-4 space-y-1 bg-white p-2.5 rounded-lg border border-slate-100">
                  <p><span class="font-semibold text-slate-500">Pemohon:</span> ${trx.applicant}</p>
                  <p><span class="font-semibold text-slate-500">Item:</span> ${trx.itemCount} Barang</p>
                  ${trx.catatan ? `<p><span class="font-semibold text-slate-500">Catatan:</span> ${trx.catatan}</p>` : ""}
               </div>
-              <div class="flex gap-2">
-                 <button onclick="approveTransaksi('${trx.id}')" class="flex-1 bg-blue-600 text-white text-xs font-bold py-2.5 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition flex justify-center items-center gap-1"><i class="fa-solid fa-check"></i> Approve</button>
+
+              <div class="flex flex-col gap-2 bg-slate-100/60 p-3 rounded-lg text-xs font-medium border border-slate-200/50">
+                 <div class="flex justify-between items-center">
+                    <span class="text-slate-500"><i class="fa-solid fa-user-tie mr-1 w-4"></i> Officer / Admin</span>
+                    <span class="flex items-center gap-1 font-bold ${statOff === "Approved" ? "text-emerald-600" : "text-amber-500"}">${iconOff} ${statOff}</span>
+                 </div>
+                 <div class="border-b border-slate-200/50 w-full my-0.5"></div>
+                 <div class="flex justify-between items-center">
+                    <span class="text-slate-500"><i class="fa-solid fa-user-shield mr-1 w-4"></i> SPV / Head</span>
+                    <span class="flex items-center gap-1 font-bold ${statSpv === "Approved" ? "text-emerald-600" : "text-amber-500"}">${iconSpv} ${statSpv}</span>
+                 </div>
               </div>
            </div>
          `;
@@ -1550,25 +1581,59 @@
       }
 
       async function approveTransaksi(trxId) {
+        const sessionUser = localStorage.getItem("currentUser");
+        if (!sessionUser)
+          return alert("Sesi login tidak valid. Silakan login ulang.");
+        const user = JSON.parse(sessionUser);
+        const userRole = (user.role || "").toUpperCase();
+
         if (!confirm(`Yakin ingin menyetujui transaksi ${trxId}?`)) return;
         const card = document.getElementById(`trx-${trxId}`);
         if (card) {
           card.style.opacity = "0.5";
           card.style.pointerEvents = "none";
         }
+
         try {
           const response = await fetch(API_URL, {
             method: "POST",
             body: JSON.stringify({
               action: "approveTransaction",
               transactionId: trxId,
+              role: user.role,
+              username: user.nama,
             }),
           });
           const res = await response.json();
+
           if (res.status === "success") {
             showToast("Transaksi Berhasil di-Approve!");
-            globalPendingData = globalPendingData.filter((t) => t.id !== trxId);
-            renderPendingList();
+
+            // --- LOGIKA MENGHILANGKAN INSTAN TANPA REFRESH HALAMAN ---
+            let trxIndex = globalPendingData.findIndex((t) => t.id === trxId);
+            if (trxIndex !== -1) {
+              // 1. Update status di data lokal sesuai role yang login
+              if (userRole.includes("ADMIN") || userRole === "OFFICER") {
+                globalPendingData[trxIndex].statusOfficer = "Approved";
+              }
+              if (userRole === "HEAD" || userRole === "SPV") {
+                globalPendingData[trxIndex].statusSPV = "Approved";
+              }
+
+              // 2. Cek apakah Officer DAN SPV sudah Approved semua
+              let statOff = globalPendingData[trxIndex].statusOfficer;
+              let statSpv = globalPendingData[trxIndex].statusSPV;
+
+              if (statOff === "Approved" && statSpv === "Approved") {
+                // Jika sudah lengkap, buang data tersebut dari daftar antrean
+                globalPendingData.splice(trxIndex, 1);
+              }
+
+              // 3. Render ulang list (karena datanya di browser, perubahannya instan)
+              renderPendingList();
+            }
+
+            // Tetap panggil sync server di latar belakang agar data tetap akurat (diam-diam)
             fetchData();
             fetchRiwayatData();
           } else {
@@ -1749,6 +1814,34 @@
         }
       }
 
+      // =================================================================
+      // SISTEM PEMICU OTOMATIS (DI COUNTER PALING BAWAH SCRIPT)
+      // =================================================================
+      function s_initDashboard() {
+        const userLoggedIn = localStorage.getItem("currentUser");
+        console.log("Status cek login (currentUser):", userLoggedIn);
+
+        // CATATAN: Jika Anda ingin memaksa data muncul tanpa harus login dulu untuk testing,
+        // hapus kondisi "if (userLoggedIn)" di bawah ini dan langsung panggil fetchData();
+        if (userLoggedIn) {
+          fetchData();
+        } else {
+          console.warn(
+            "Data tidak di-load otomatis karena sistem membaca Anda 'Belum Login' (currentUser kosong).",
+          );
+        }
+      }
+
+      // Jalankan langsung tanpa menunggu DOMContentLoaded (karena script berada di akhir body HTML)
+      s_initDashboard();
+
+      // Auto refresh setiap 5 detik
+      setInterval(() => {
+        const userLoggedIn = localStorage.getItem("currentUser");
+        if (userLoggedIn) {
+          fetchData();
+        }
+      }, 5000);
       function toggleOpnameModal(show) {
         document
           .getElementById("opnameModal")
@@ -2178,6 +2271,31 @@
         switchView("home");
         checkLoginStatus();
       }
+
+      // Tambahkan fungsi untuk memuat data secara instan saat halaman dibuka
+      function loadInitialData() {
+        const userLoggedIn = localStorage.getItem("currentUser");
+        if (userLoggedIn && typeof fetchData === "function") {
+          fetchData(); // Menarik data langsung tanpa delay
+        }
+      }
+
+      // Jalankan fungsi di atas begitu struktur HTML selesai dimuat
+      document.addEventListener("DOMContentLoaded", () => {
+        loadInitialData();
+      });
+
+      // =================================================================
+      // FITUR AUTO-REFRESH SINKRONISASI DATA (SETIAP 5 DETIK)
+      // =================================================================
+      setInterval(() => {
+        const userLoggedIn = localStorage.getItem("currentUser");
+
+        // Hanya tarik data baru jika user sudah login
+        if (userLoggedIn && typeof fetchData === "function") {
+          fetchData(); // Menarik daftar pending terbaru dan otomatis merender ulang
+        }
+      }, 5000); // 5000 ms = 5 detik agar perubahannya terasa instan
     </script>
   </body>
 </html>
